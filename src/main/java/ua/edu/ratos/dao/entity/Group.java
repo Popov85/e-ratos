@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @ToString(exclude = {"staff", "department", "students"})
 @Entity
-@Table(name = "groups")
+@Table(name = "u_groups")
 @Where(clause = "is_deleted = 0")
 @DynamicUpdate
 @Cacheable

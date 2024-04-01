@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring.security.oauth>2.3.8.RELEASE</spring.security.oauth>
-        <mysql.connector.version>8.0.33</mysql.connector.version>
+        <mysql.connector.version>8.3.0</mysql.connector.version>
         <mapper.version>2.1.0</mapper.version>
         <commons-io.version>2.15.1</commons-io.version>
         <char.detector>1.0.3</char.detector>
@@ -164,10 +164,9 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>${mysql.connector.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>

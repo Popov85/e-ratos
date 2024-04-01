@@ -16,7 +16,7 @@ as well as directly from within Intranet or Internet network via a browser.
 - Java 17;
 - Spring Boot 2.5.x;
 - Hibernate;
-- RDBMS (MySql 5.7);
+- RDBMS (MySql 8.x);
 - Maven.
 
 ##### Frontend:
@@ -58,7 +58,7 @@ Docker file creation with Jib Maven plugin info:
 - Add SpringBoot configuration
 - Enable env. variable file
 - Add env file as the .env file
-- Set up MySql database locally (v 5.7)
+- Set up MySql database locally (v 8.x)
 - Run locally
 
 **Docker-compose config [info](https://www.jetbrains.com/help/idea/docker-compose.html):**

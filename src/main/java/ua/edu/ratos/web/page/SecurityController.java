@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class SecurityController {
 
-    @Value("${spring.resources.cache.cachecontrol.max-age}")
+    @Value("${spring.web.resources.cache.cachecontrol.max-age}")
     private String maxAge;
 
     // Custom login form

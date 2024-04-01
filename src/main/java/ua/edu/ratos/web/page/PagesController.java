@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class PagesController {
 
-    @Value("${spring.resources.cache.cachecontrol.max-age}")
+    @Value("${spring.web.resources.cache.cachecontrol.max-age}")
     private String maxAge;
 
     @Value("${spring.profiles.active}")

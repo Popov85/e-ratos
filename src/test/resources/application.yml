@@ -4,7 +4,8 @@ server:
     session:
       timeout: 200m
   tomcat:
-    max-threads: 200
+    threads:
+      max: 200
 
 spring:
   application:
@@ -24,12 +25,12 @@ spring:
           javax:
             cache:
               provider: org.ehcache.jsr107.EhcacheCachingProvider
-        javax:
-          persistence:
-            sharedCache:
-              mode: ENABLE_SELECTIVE
-          cache:
-            uri: classpath:ehcache.xml
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+        cache:
+          uri: classpath:ehcache.xml
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -54,16 +55,19 @@ spring:
       cleanup-cron: 0 * * * * *
       flush-mode: on_save
       namespace: spring:session
-  resources:
-    cache:
-      cachecontrol:
-        max-age: 30d
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 30d
   flyway:
     enabled: true
 
 springdoc:
-  pi-docs.path: /api-docs
-  swagger-ui.path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 management:
   health:

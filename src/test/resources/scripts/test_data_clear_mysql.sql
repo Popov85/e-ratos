@@ -34,7 +34,7 @@ delete from question_type;
 delete from scheme_four_point;
 delete from scheme_two_point;
 delete from scheme_free_point;
-delete from groups;
+delete from u_groups;
 delete from session_preserved;
 delete from scheme;
 delete from mode;
@@ -100,7 +100,7 @@ ALTER TABLE phrase AUTO_INCREMENT = 1;
 ALTER TABLE answer_mq AUTO_INCREMENT = 1;
 ALTER TABLE answer_sq AUTO_INCREMENT = 1;
 ALTER TABLE result AUTO_INCREMENT = 1;
-ALTER TABLE groups AUTO_INCREMENT = 1;
+ALTER TABLE u_groups AUTO_INCREMENT = 1;
 
 ALTER TABLE lms AUTO_INCREMENT = 1;
 ALTER TABLE lti_version AUTO_INCREMENT = 1;

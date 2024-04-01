@@ -35,7 +35,7 @@ values (4, 4, 5, 0, 0);
 insert into type_level(scheme_theme_id, type_id, level_1, level_2, level_3)
 values (5, 5, 5, 0, 0);
 
-insert into groups(name, is_enabled, created_by, belongs_to, created)
+insert into u_groups(name, is_enabled, created_by, belongs_to, created)
 values ('Group #1', 1, 1, 1, '2020-07-18 11:45:15.999999999');
 
 insert into group_scheme(group_id, scheme_id)

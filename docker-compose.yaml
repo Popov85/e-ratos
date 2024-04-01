@@ -1,20 +1,18 @@
 # 1. Install docker and docker-compose on a linux server;
 # 2. On the server, create a folder e-ratos and copy there docker-compose.yaml and create folders database, sql and redis inside it;
 # 2.1 On the server, put sql scripts to init the DB into folder sql (docker will execute all the files with .sql extension);
-# 3. Being inside folder ratos3 invoke the following command: docker-compose up -d
+# 3. Being inside folder ratos3 invoke the following command: docker compose up -d
 # 4. Wait until the app is up (check /department or /session/start?schemeId=1).
-
-version: '3.1'
 
 services:
 
-  ratos_db:
-    container_name: ratos_db
-    image: mysql:5.7
+  ratos_mysql_db:
+    container_name: ratos_mysql_db
+    image: mysql:8.0.36
     restart: always
-    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+    command: --default-authentication-plugin=caching_sha2_password --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
     ports:
-      - "3307:3306"
+      - "3308:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
       - MYSQL_DATABASE=${DATABASE_NAME}
@@ -24,34 +22,32 @@ services:
       - ./database:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
 
-  redis_db:
-    container_name: redis_db
+  ratos_redis_db:
+    container_name: ratos_redis_db
     image: redis:latest
     ports:
       - "6379:6379"
     volumes:
-      - ./redis/redis.conf:/redis.conf
+      - ./redis.conf:/redis.conf
     command: [ "redis-server", "/redis.conf" ]
 
   ratos_app:
     container_name: ratos_app
     depends_on:
-      ratos_db:
-        condition: service_started
-      redis_db:
-        condition: service_started
+      - ratos_mysql_db
+      - ratos_redis_db
     image: gelever85/ratos3:latest
     restart: always
     ports:
       - "80:8080"
     environment:
-      - DATABASE_HOST=ratos_db
+      - DATABASE_HOST=ratos_mysql_db
       - SERVER_PORT=${SERVER_PORT} # Environment reference for server port
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_PORT=${DATABASE_PORT}
-      - REDIS_HOST=redis_db
+      - REDIS_HOST=ratos_redis_db
       - REDIS_SECRET=${REDIS_SECRET}
       - REDIS_PORT=${REDIS_PORT}
       - SPRING_ACTIVE_PROFILE=${SPRING_ACTIVE_PROFILE}

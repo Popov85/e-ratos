@@ -34,7 +34,7 @@ delete from question_type;
 delete from scheme_four_point;
 delete from scheme_two_point;
 delete from scheme_free_point;
-delete from groups;
+delete from u_groups;
 delete from session_preserved;
 delete from scheme;
 delete from mode;

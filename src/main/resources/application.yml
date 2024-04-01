@@ -4,13 +4,46 @@ server:
     session:
       timeout: ${SERVLET_SESSION_TIMEOUT}
   tomcat:
-    max-threads: ${TOMCAT_MAX_THREADS}
+    threads:
+      max: ${TOMCAT_MAX_THREADS}
 
 spring:
   application:
     name: ratos
   profiles:
     active: ${SPRING_ACTIVE_PROFILE} # For logging settings (see logback-spring.xml)
+  datasource:
+    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: false
+        format_sql: true
+        cache:
+          use_second_level_cache: ${HIBERNATE_ENABLE_2LC:true}
+          use_query_cache: ${HIBERNATE_ENABLE_2LC:true}
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+          javax:
+            cache:
+              provider: org.ehcache.jsr107.EhcacheCachingProvider
+        javax:
+          cache:
+            uri: classpath:ehcache.xml
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -19,43 +52,11 @@ spring:
     job-store-type: memory
     properties:
       org.quartz.threadPool.threadCount: 4
-  resources:
-    cache:
-      cachecontrol:
-        max-age: 30d
-  flyway:
-    locations: classpath:db/migration
-    enabled: true
-  datasource:
-    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?serverTimezone=UTC&rewriteBatchedStatements=true&useSSL=false
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 10
-      connection-timeout: 30000
-  jpa:
-    properties:
-      hibernate:
-        cache:
-          use_second_level_cache: ${HIBERNATE_ENABLE_2LC}
-          use_query_cache: ${HIBERNATE_ENABLE_2LC}
-          region:
-            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-          javax:
-            cache:
-              provider: org.ehcache.jsr107.EhcacheCachingProvider
-        javax:
-          persistence:
-            sharedCache:
-              mode: ENABLE_SELECTIVE
-          cache:
-            uri: classpath:ehcache.xml
-          show_sql: false
-          format_sql: true
-    open-in-view: false
-    hibernate:
-      ddl-auto: none
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 30d
   cache:
     type: ${SPRING_CACHE_TYPE}
     cache-names: question
@@ -76,10 +77,15 @@ spring:
     host: ${REDIS_HOST}
     password: ${REDIS_SECRET}
     port: ${REDIS_PORT}
+  flyway:
+    locations: classpath:db/migration
+    enabled: true
 
 springdoc:
-  pi-docs.path: /api-docs
-  swagger-ui.path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 management:
   health:

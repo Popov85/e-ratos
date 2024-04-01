@@ -34,7 +34,7 @@ delete from question_type;
 delete from scheme_four_point;
 delete from scheme_two_point;
 delete from scheme_free_point;
-delete from groups;
+delete from u_groups;
 delete from session_preserved;
 delete from scheme;
 delete from mode;
@@ -105,7 +105,7 @@ ALTER TABLE answer_sq ALTER COLUMN answer_id RESTART WITH 1;
 
 ALTER TABLE result ALTER COLUMN result_id RESTART WITH 1;
 
-ALTER TABLE groups ALTER COLUMN group_id RESTART WITH 1;
+ALTER TABLE u_groups ALTER COLUMN group_id RESTART WITH 1;
 
 ALTER TABLE lms ALTER COLUMN lms_id RESTART WITH 1;
 ALTER TABLE lti_version ALTER COLUMN version_id RESTART WITH 1;

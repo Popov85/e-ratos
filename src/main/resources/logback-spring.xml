@@ -51,6 +51,10 @@
             <appender-ref ref="CONSOLE"/>
         </logger>
 
+        <logger name="org.springframework.boot" additivity="false" level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
         <logger name="org.springframework" additivity="false" level="WARN">
             <appender-ref ref="CONSOLE"/>
         </logger>
