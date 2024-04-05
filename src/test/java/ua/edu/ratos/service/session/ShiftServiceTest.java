@@ -1,24 +1,23 @@
 package ua.edu.ratos.service.session;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.domain.question.QuestionMCQDomain;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ShiftServiceTest {
 
     @Mock
@@ -28,7 +27,7 @@ public class ShiftServiceTest {
 
     private Map<Long, QuestionDomain> questionsMap;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         QuestionDomain q1 = createQuestion(1L, "Q1");
         QuestionDomain q2 = createQuestion(2L, "Q2");
@@ -36,7 +35,7 @@ public class ShiftServiceTest {
         QuestionDomain q4 = createQuestion(4L, "Q4");
         QuestionDomain q5 = createQuestion(5L, "Q5");
 
-        questionDomains = new ArrayList<>(Arrays.asList(q1, q2, q3, q4, q5));
+        questionDomains = new ArrayList<>(List.of(q1, q2, q3, q4, q5));
 
         questionsMap = new HashMap<>();
         questionsMap.put(1L, q1);
@@ -46,7 +45,7 @@ public class ShiftServiceTest {
         questionsMap.put(5L, q5);
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftOneFromTheBeginningTest() {
         // Prepare mocks
         when(sessionData.getSequence()).thenReturn(questionDomains);
@@ -65,12 +64,12 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(2L, 3L, 4L, 5L, 1L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(2L, 3L, 4L, 5L, 1L), is(equalTo(actual)));
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftOneFromTheMiddleTest() {
         // Prepare mocks
         when(sessionData.getSequence()).thenReturn(questionDomains);
@@ -89,12 +88,12 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(1L, 2L, 4L, 5L, 3L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(1L, 2L, 4L, 5L, 3L), is(equalTo(actual)));
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftOneFromTheEndTest() {
         // Prepare mocks
         when(sessionData.getSequence()).thenReturn(questionDomains);
@@ -113,12 +112,12 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftTwoTest() {
         when(sessionData.getSequence()).thenReturn(questionDomains);
         when(sessionData.getQuestionsMap()).thenReturn(questionsMap);
@@ -134,12 +133,12 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(1L, 3L, 5L, 2L, 4L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(1L, 3L, 5L, 2L, 4L), is(equalTo(actual)));
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftAllTest() {
         when(sessionData.getSequence()).thenReturn(questionDomains);
         when(sessionData.getQuestionsMap()).thenReturn(questionsMap);
@@ -155,12 +154,12 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftOneNotPresentShouldBeIgnoredTest() {
         // Prepare mocks
         when(sessionData.getSequence()).thenReturn(questionDomains);
@@ -179,12 +178,12 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void doShiftManyNotPresentShouldBeIgnoredTest() {
         // Prepare mocks
         when(sessionData.getSequence()).thenReturn(questionDomains);
@@ -203,9 +202,9 @@ public class ShiftServiceTest {
         verify(sessionData, times(1)).getQuestionsMap();
 
         // Prepare actual list of IDs of compare
-        List<Long> actual = questionDomains.stream().map(q -> q.getQuestionId()).collect(Collectors.toList());
+        List<Long> actual = questionDomains.stream().map(QuestionDomain::getQuestionId).collect(Collectors.toList());
 
-        assertThat("After shifting, the resulting array is broken", Arrays.asList(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
+        assertThat("After shifting, the resulting array is broken", List.of(1L, 2L, 3L, 4L, 5L), is(equalTo(actual)));
     }
 
     private QuestionDomain createQuestion(Long id, String title) {

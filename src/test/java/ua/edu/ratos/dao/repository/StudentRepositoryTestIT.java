@@ -1,15 +1,15 @@
 package ua.edu.ratos.dao.repository;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.Student;
 
@@ -17,14 +17,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnitUtil;
 import java.util.Optional;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class StudentRepositoryTestIT {
 
     @Autowired
@@ -35,18 +35,18 @@ public class StudentRepositoryTestIT {
 
     private PersistenceUnitUtil persistenceUnitUtil;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         persistenceUnitUtil = entityManagerFactory.getPersistenceUnitUtil();
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findOneForAuthenticationTest() {
         Optional<Student> optional = studentRepository.findByIdForAuthentication("maria.medvedeva@example.com");
-        assertTrue("User of Student is not loaded", persistenceUnitUtil.isLoaded(optional.get(), "user"));
-        assertTrue("Roles of User is not loaded", persistenceUnitUtil.isLoaded(optional.get().getUser(), "roles"));
+        assertTrue(persistenceUnitUtil.isLoaded(optional.get(), "user"), "User of Student is not loaded");
+        assertTrue(persistenceUnitUtil.isLoaded(optional.get().getUser(), "roles"), "Roles of User is not loaded");
         assertThat("Student is not as expected", optional.get(), allOf(
                 hasProperty("studId", equalTo(2L)),
                 hasProperty("user", allOf(
@@ -58,16 +58,16 @@ public class StudentRepositoryTestIT {
     }
 
     //-------------------------------------------------------------------------------------------------------------------
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findOneForEditTest() {
         Optional<Student> stud = studentRepository.findOneForEdit(2L);
-        assertTrue("Student object is not found", stud.isPresent());
-        assertTrue("User of Student is not loaded", persistenceUnitUtil.isLoaded(stud, "user"));
-        assertTrue("StudentClass of Student is not loaded", persistenceUnitUtil.isLoaded(stud, "studentClass"));
-        assertTrue("Faculty of StudentClass is not loaded", persistenceUnitUtil.isLoaded(stud.get().getStudentClass(), "faculty"));
-        assertTrue("Organisation of StudentClass is not loaded", persistenceUnitUtil.isLoaded(stud.get().getStudentClass(), "organisation"));
+        assertTrue(stud.isPresent(), "Student object is not found");
+        assertTrue(persistenceUnitUtil.isLoaded(stud.get(), "user"), "User of Student is not loaded");
+        assertTrue(persistenceUnitUtil.isLoaded(stud.get(), "studentClass"), "StudentClass of Student is not loaded");
+        assertTrue(persistenceUnitUtil.isLoaded(stud.get().getStudentClass(), "faculty"), "Faculty of StudentClass is not loaded");
+        assertTrue(persistenceUnitUtil.isLoaded(stud.get().getStudentClass(), "organisation"), "Organisation of StudentClass is not loaded");
         assertThat("Student is not as expected", stud.get(), allOf(
                 hasProperty("studId", equalTo(2L)),
                 hasProperty("user", allOf(
@@ -78,7 +78,7 @@ public class StudentRepositoryTestIT {
         ));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdTest() {
@@ -89,14 +89,14 @@ public class StudentRepositoryTestIT {
                 hasProperty("totalElements", equalTo(4L))));
         page.getContent()
                 .forEach(s -> {
-                    assertTrue("User of Student is not loaded", persistenceUnitUtil.isLoaded(s, "user"));
-                    assertTrue("StudentClass of Student is not loaded", persistenceUnitUtil.isLoaded(s, "studentClass"));
-                    assertTrue("Faculty of StudentClass is not loaded", persistenceUnitUtil.isLoaded(s.getStudentClass(), "faculty"));
-                    assertTrue("Organisation of StudentClass is not loaded", persistenceUnitUtil.isLoaded(s.getStudentClass(), "organisation"));
+                    assertTrue(persistenceUnitUtil.isLoaded(s, "user"), "User of Student is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s, "studentClass"), "StudentClass of Student is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s.getStudentClass(), "faculty"), "Faculty of StudentClass is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s.getStudentClass(), "organisation"), "Organisation of StudentClass is not loaded");
                 });
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdAndSurnameLettersContainsTest() {
@@ -111,14 +111,14 @@ public class StudentRepositoryTestIT {
         ));
         slice.getContent()
                 .forEach(s -> {
-                    assertTrue("User of Student is not loaded", persistenceUnitUtil.isLoaded(s, "user"));
-                    assertTrue("StudentClass of Student is not loaded", persistenceUnitUtil.isLoaded(s, "studentClass"));
-                    assertTrue("Faculty of StudentClass is not loaded", persistenceUnitUtil.isLoaded(s.getStudentClass(), "faculty"));
-                    assertTrue("Organisation of StudentClass is not loaded", persistenceUnitUtil.isLoaded(s.getStudentClass(), "organisation"));
+                    assertTrue(persistenceUnitUtil.isLoaded(s, "user"), "User of Student is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s, "studentClass"), "StudentClass of Student is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s.getStudentClass(), "faculty"), "Faculty of StudentClass is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s.getStudentClass(), "organisation"), "Organisation of StudentClass is not loaded");
                 });
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdAndEmailLettersContainsTest() {
@@ -133,14 +133,14 @@ public class StudentRepositoryTestIT {
         ));
         slice.getContent()
                 .forEach(s -> {
-                    assertTrue("User of Student is not loaded", persistenceUnitUtil.isLoaded(s, "user"));
-                    assertTrue("StudentClass of Student is not loaded", persistenceUnitUtil.isLoaded(s, "studentClass"));
-                    assertTrue("Faculty of StudentClass is not loaded", persistenceUnitUtil.isLoaded(s.getStudentClass(), "faculty"));
-                    assertTrue("Organisation of StudentClass is not loaded", persistenceUnitUtil.isLoaded(s.getStudentClass(), "organisation"));
+                    assertTrue(persistenceUnitUtil.isLoaded(s, "user"), "User of Student is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s, "studentClass"), "StudentClass of Student is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s.getStudentClass(), "faculty"), "Faculty of StudentClass is not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(s.getStudentClass(), "organisation"), "Organisation of StudentClass is not loaded");
                 });
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdAndNameLettersContainsNegativeTest() {

@@ -1,13 +1,12 @@
 package ua.edu.ratos.service.session;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos._helper.QuestionGeneratorHelper;
 import ua.edu.ratos.service.domain.*;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
@@ -20,10 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SessionDataServiceTest extends QuestionGeneratorHelper {
 
     @Autowired
@@ -42,8 +40,7 @@ public class SessionDataServiceTest extends QuestionGeneratorHelper {
 
     private BatchOutDto batchOutDto;
 
-    @Before
-    // The test's sql script ExecutionPhase.BEFORE_TEST_METHOD is invoked before @Before
+    @BeforeEach
     public void init() {
 
         SchemeDomain schemeDomain = new SchemeDomain()
@@ -51,7 +48,7 @@ public class SessionDataServiceTest extends QuestionGeneratorHelper {
                 .setSettingsDomain(new SettingsDomain()
                         .setSetId(1L)
                         .setName("Settings test")
-                        .setQuestionsPerSheet((short)5)
+                        .setQuestionsPerSheet((short) 5)
                         .setSecondsPerQuestion(60)
                         .setStrictControlTimePerQuestion(false))
                 .setStrategyDomain(new StrategyDomain().setStrId(1L))
@@ -66,23 +63,19 @@ public class SessionDataServiceTest extends QuestionGeneratorHelper {
                 createMQ(4L, "Matcher QuestionDomain #4", true),
                 createSQ(5L, "Sequence question #5"));
 
-        SessionData sessionData = SessionData.createNoLMS(1L, schemeDomain, sequence);
-
-        this.sessionData = sessionData;
+        this.sessionData = SessionData.createNoLMS(1L, schemeDomain, sequence);
 
         List<QuestionSessionOutDto> batchQuestions = sequence
                 .stream()
-                .map(q -> q.toDto())
+                .map(QuestionDomain::toDto)
                 .collect(Collectors.toList());
 
-        BatchOutDto batchOutDto = BatchOutDto.createRegular(batchQuestions, true);
-
-        this.batchOutDto = batchOutDto;
+        this.batchOutDto = BatchOutDto.createRegular(batchQuestions, true);
     }
 
 
     @Test
-    public void updateTest()  {
+    public void updateTest() {
         int currentIndexBefore = sessionData.getCurrentIndex();
         Optional<BatchOutDto> currentBatchBefore = sessionData.getCurrentBatch();
         LocalDateTime currentBatchIssuedBefore = sessionData.getCurrentBatchIssued();

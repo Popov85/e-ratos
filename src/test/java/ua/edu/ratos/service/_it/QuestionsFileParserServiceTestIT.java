@@ -1,12 +1,12 @@
 package ua.edu.ratos.service._it;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.question.Question;
@@ -28,8 +28,8 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 /**
  * @link https://stackoverflow.com/questions/21800726/using-spring-mvc-test-to-unit-test-multipart-post-request
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class QuestionsFileParserServiceTestIT {
 
     private static final String TYPICAL_CASE_TXT = "classpath:files/txt/typical_case.txt";
@@ -45,7 +45,7 @@ public class QuestionsFileParserServiceTestIT {
     @Autowired
     private QuestionsFileParserService questionsFileParserService;
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveTXTFileNoIssuesTest() throws Exception {
@@ -55,19 +55,19 @@ public class QuestionsFileParserServiceTestIT {
         // Actual test begins
         final QuestionsParsingResultOutDto result = questionsFileParserService.parseAndSave(mock, 1L, false);
         assertThat("Result of saving object is not as expected", result, allOf(
-                    hasProperty("questions", equalTo(10)),
-                    hasProperty("issues", equalTo(0)),
-                    hasProperty("charset", equalTo("UTF-8")),
-                    hasProperty("majorIssues", equalTo(0)),
-                    hasProperty("mediumIssues", equalTo(0)),
-                    hasProperty("minorIssues", equalTo(0)),
-                    hasProperty("allIssues", empty()),
-                    hasProperty("saved", equalTo(true))
-                ));
+                hasProperty("questions", equalTo(10)),
+                hasProperty("issues", equalTo(0)),
+                hasProperty("charset", equalTo("UTF-8")),
+                hasProperty("majorIssues", equalTo(0)),
+                hasProperty("mediumIssues", equalTo(0)),
+                hasProperty("minorIssues", equalTo(0)),
+                hasProperty("allIssues", empty()),
+                hasProperty("saved", equalTo(true))
+        ));
         assertThat("Questions quantity in DB is not 10", em.createQuery(FIND).getResultList().size(), equalTo(10));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveRTPFileNoIssuesTest() throws Exception {
@@ -77,19 +77,19 @@ public class QuestionsFileParserServiceTestIT {
         // Actual test begins
         final QuestionsParsingResultOutDto result = questionsFileParserService.parseAndSave(mock, 1L, true);
         assertThat("Result of saving object is not as expected", result, allOf(
-                    hasProperty("questions", equalTo(10)),
-                    hasProperty("issues", equalTo(0)),
-                    hasProperty("charset", equalTo("UTF-8")),
-                    hasProperty("majorIssues", equalTo(0)),
-                    hasProperty("mediumIssues", equalTo(0)),
-                    hasProperty("minorIssues", equalTo(0)),
-                    hasProperty("allIssues", empty()),
-                    hasProperty("saved", equalTo(true))
-                ));
+                hasProperty("questions", equalTo(10)),
+                hasProperty("issues", equalTo(0)),
+                hasProperty("charset", equalTo("UTF-8")),
+                hasProperty("majorIssues", equalTo(0)),
+                hasProperty("mediumIssues", equalTo(0)),
+                hasProperty("minorIssues", equalTo(0)),
+                hasProperty("allIssues", empty()),
+                hasProperty("saved", equalTo(true))
+        ));
         assertThat("Questions quantity in DB is not 10", em.createQuery(FIND).getResultList().size(), equalTo(10));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveTXT1251EncodedFileNoIssuesTest() throws Exception {
@@ -111,7 +111,8 @@ public class QuestionsFileParserServiceTestIT {
         assertThat("Questions quantity in DB is not 10", em.createQuery(FIND).getResultList().size(), equalTo(10));
     }
 
-    @Test(timeout = 5000)
+    @Test
+    @SuppressWarnings(value = "unchecked")
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveTXTFileWithIssuesNotConfirmedTest() throws Exception {
@@ -130,10 +131,11 @@ public class QuestionsFileParserServiceTestIT {
                 hasProperty("allIssues", hasSize(5)),
                 hasProperty("saved", equalTo(false))
         ));
-        assertThat("Questions from non-confirmed file with issues must not be saved into DB", (List<Question>)em.createQuery(FIND).getResultList(), empty());
+        assertThat("Questions from non-confirmed file with issues must not be saved into DB", (List<Question>) em.createQuery(FIND).getResultList(), empty());
     }
 
-    @Test(timeout = 5000)
+    @Test
+    @SuppressWarnings(value = "unchecked")
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveRTPFileWithIssuesConfirmedTest() throws Exception {
@@ -152,6 +154,6 @@ public class QuestionsFileParserServiceTestIT {
                 hasProperty("allIssues", hasSize(5)),
                 hasProperty("saved", equalTo(true))
         ));
-        assertThat("Questions quantity in DB is not 3", (List<Question>)em.createQuery(FIND).getResultList(), hasSize(3));
+        assertThat("Questions quantity in DB is not 3", (List<Question>) em.createQuery(FIND).getResultList(), hasSize(3));
     }
 }

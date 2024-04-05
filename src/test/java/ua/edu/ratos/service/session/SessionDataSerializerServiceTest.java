@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.skyscreamer.jsonassert.JSONAssert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.util.ResourceUtils;
 import ua.edu.ratos._helper.QuestionGeneratorHelper;
@@ -32,9 +28,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
-@Slf4j
-@RunWith(JUnit4.class)
 public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
 
     public static final String JSON_INIT_NO_BATCH = "classpath:json/session_data_init_no_batch.json";
@@ -45,18 +40,18 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
 
     public static final String JSON_TERMINAL = "classpath:json/session_data_terminal.json";
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private SchemeDomain schemeDomain;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         LocalDateTimeDeserializer localDateTimeDeserializer = new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME);
         objectMapper.registerModule(new JavaTimeModule().addDeserializer(LocalDateTime.class, localDateTimeDeserializer));
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
-    @Before
+    @BeforeEach
     public void init() {
         // Some tests modify scheme's state(!)
         schemeDomain = new SchemeDomain();
@@ -78,12 +73,12 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         schemeDomain.setOptionsDomain(new OptionsDomain().setOptId(1L).setName("OptionsDomain #1"));
     }
 
-    @Test(timeout = 2000)
+    @Test
     public void serializeInitStateNoCurrentBatchTest() throws Exception {
         // Given: SessionData object being preserved by a user at some point of its life-cycle (initial state, no batch)
         // We use custom class to transform it into JSON format
         // Check if this JSON string is equal to the expected one, located in a pre-defined file
-        SessionData sessionData = SessionData.createNoLMS(1L, schemeDomain, Arrays.asList(
+        SessionData sessionData = SessionData.createNoLMS(1L, schemeDomain, List.of(
                 createMCQ(1L, "QuestionMultiple Choice #1"),
                 createFBSQ(2L, "Question Fill Blank Single #2"),
                 createFBMQ(3L, "Question Fill Blank Multiple #3", false),
@@ -103,12 +98,11 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         // Serialize with our service bean into JSON string
         SessionDataSerializerService serializer = new SessionDataSerializerService(objectMapper);
         String actual = serializer.serialize(sessionData);
-        //log.debug("actual = {}", actual);
         // Compare two strings
-        JSONAssert.assertEquals("Actual JSON string is different from what is expected", expected, actual, JSONCompareMode.LENIENT);
+        assertEquals("Actual JSON string is different from what is expected", expected, actual, JSONCompareMode.LENIENT);
     }
 
-    @Test(timeout = 2000)
+    @Test
     public void deserializeInitStateNoCurrentBatchTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_INIT_NO_BATCH);
         byte[] encoded = Files.readAllBytes(json.toPath());
@@ -138,12 +132,12 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         ));
     }
 
-    @Test(timeout = 2000)
+    @Test
     public void serializeInitStateWith5DifferentQuestionsNoLmsTest() throws Exception {
         // Given: SessionData object being preserved by a user at initial state, first and single batch of 5 questions
         // We use custom class to transform it into JSON format
         // Check if this JSON string is equal to the expected one, located in a pre-defined file
-        List<QuestionDomain> sequence = Arrays.asList(
+        List<QuestionDomain> sequence = List.of(
                 createMCQ(1L, "QuestionMultiple Choice #1"),
                 createFBSQ(2L, "Question Fill Blank Single #2"),
                 createFBMQ(3L, "Question Fill Blank Multiple #3", false),
@@ -152,7 +146,7 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
 
         SessionData sessionData = SessionData.createNoLMS(1L, schemeDomain, sequence);
         BatchOutDto batchOutDto = BatchOutDto.createRegular(
-                sequence.stream().map(q -> q.toDto()).collect(Collectors.toList()), true);
+                sequence.stream().map(QuestionDomain::toDto).collect(Collectors.toList()), true);
         batchOutDto.setBatchExpiresInSec(null);
         batchOutDto.setSessionExpiresInSec(500L);
         batchOutDto.setQuestionsLeft(0);
@@ -176,11 +170,10 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
 
         SessionDataSerializerService serializer = new SessionDataSerializerService(objectMapper);
         String actual = serializer.serialize(sessionData);
-        //log.debug("Serialised sessionData object (init) = {}", actual);
-        JSONAssert.assertEquals("Actual JSON string is different from what is expected", expected, actual, JSONCompareMode.LENIENT);
+        assertEquals("Actual JSON string is different from what is expected", expected, actual, JSONCompareMode.LENIENT);
     }
 
-    @Test(timeout = 2000)
+    @Test
     public void deserializeInitStateWith5DifferentQuestionsNoLmsTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_INIT_BATCH);
         byte[] encoded = Files.readAllBytes(json.toPath());
@@ -220,11 +213,9 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         ));
     }
 
-
     //------------------------------------------------------------------------------------------------------------------
 
-
-    @Test(timeout = 2000)
+    @Test
     public void serializeInterStateWith1QuestionPerBatchWithLmsTest() throws Exception {
         // Given: typical use case (1 question ber batch, limited in time, preserved in the middle of the test)
         QuestionMCQDomain mcq = createMCQ(1L, "Question Multiple Choice #1");
@@ -232,14 +223,14 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         QuestionFBMQDomain fbmq = createFBMQ(3L, "Question Fill Blank Multiple #3", false);
         QuestionMQDomain mq = createMQ(4L, "Matcher Question #4", false);
         QuestionSQDomain sq = createSQ(5L, "Sequence Question #5");
-        List<QuestionDomain> sequence = Arrays.asList(mcq, fbsq, fbmq, mq, sq);
+        List<QuestionDomain> sequence = List.of(mcq, fbsq, fbmq, mq, sq);
         // Adjust value for this particular test
         schemeDomain.getSettingsDomain().setQuestionsPerSheet((short) 1);
 
         SessionData sessionData = SessionData.createFromLMS(1L, 1L, schemeDomain, sequence);
 
         // Last but one question in the current batch
-        BatchOutDto batchOutDto = BatchOutDto.createRegular(Arrays.asList(mq.toDto()), false);
+        BatchOutDto batchOutDto = BatchOutDto.createRegular(List.of(mq.toDto()), false);
         batchOutDto.setBatchExpiresInSec(60L);
         batchOutDto.setSessionExpiresInSec(300L);
         batchOutDto.setQuestionsLeft(1);
@@ -264,25 +255,25 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         progressData.setScore(5);
 
         ResponseEvaluated r0 = new ResponseEvaluated(1L, new ResponseMCQ(
-                1L, new HashSet<>(Arrays.asList(1L))), 100, false);
+                1L, Set.of(1L)), 100, false);
 
-        BatchEvaluated b0 = new BatchEvaluated(Arrays.asList(r0), 30, false);
+        BatchEvaluated b0 = new BatchEvaluated(List.of(r0), 30, false);
 
         ResponseEvaluated r1 = new ResponseEvaluated(2L,
                 new ResponseFBSQ(2L, "wrong phraseDomain"), 0, false);
 
-        BatchEvaluated b1 = new BatchEvaluated(Arrays.asList(r1), 50, false);
+        BatchEvaluated b1 = new BatchEvaluated(List.of(r1), 50, false);
 
-        ResponseEvaluated r2 = new ResponseEvaluated(3L, new ResponseFBMQ(3L, new HashSet<>(Arrays.asList(
+        ResponseEvaluated r2 = new ResponseEvaluated(3L, new ResponseFBMQ(3L, Set.of(
                 new ResponseFBMQ.Pair(1L, "(correct) Target phraseDomain for FBMQ answer #1"),
                 new ResponseFBMQ.Pair(2L, "(correct) Target phraseDomain for FBMQ answer #2"),
                 new ResponseFBMQ.Pair(3L, "(correct) Target phraseDomain for FBMQ answer #3"),
                 new ResponseFBMQ.Pair(4L, "(correct) Target phraseDomain for FBMQ answer #4")
-        ))), 100, false);
+        )), 100, false);
 
-        BatchEvaluated b2 = new BatchEvaluated(Arrays.asList(r2), 25, false);
+        BatchEvaluated b2 = new BatchEvaluated(List.of(r2), 25, false);
 
-        progressData.setBatchesEvaluated(Arrays.asList(b0, b1, b2));
+        progressData.setBatchesEvaluated(List.of(b0, b1, b2));
 
         sessionData.setProgressData(progressData);
 
@@ -308,11 +299,10 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
 
         SessionDataSerializerService serializer = new SessionDataSerializerService(objectMapper);
         String actual = serializer.serialize(sessionData);
-        //log.debug("Serialised sessionData (middle) object = {}", actual);
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.LENIENT);
+        assertEquals(expected, actual, JSONCompareMode.LENIENT);
     }
 
-    @Test(timeout = 2000)
+    @Test
     public void deserializeInterStateWith1QuestionPerBatchWithLmsTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_INTERMEDIATE);
         byte[] encoded = Files.readAllBytes(json.toPath());
@@ -358,7 +348,7 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
     }
 
 
-    @Test(timeout = 5000)
+    @Test
     public void serializeTerminalStateWith1QuestionPerBatchWithLmsTest() throws Exception {
         // Given: typical use case (1 question ber batch, limited in time, preserved at the end of the session to keep for some time before auto removal)
         QuestionMCQDomain mcq = createMCQ(1L, "Question Multiple Choice #1");
@@ -366,7 +356,7 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         QuestionFBMQDomain fbmq = createFBMQ(3L, "Question Fill Blank Multiple #3", false);
         QuestionMQDomain mq = createMQ(4L, "Matcher Question #4", false);
         QuestionSQDomain sq = createSQ(5L, "Sequence Question #5");
-        List<QuestionDomain> sequence = Arrays.asList(mcq, fbsq, fbmq, mq, sq);
+        List<QuestionDomain> sequence = List.of(mcq, fbsq, fbmq, mq, sq);
         // Adjust value for this particular test
         schemeDomain.getSettingsDomain().setQuestionsPerSheet((short) 1);
 
@@ -386,34 +376,34 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         progressData.setScore(9);
 
         ResponseEvaluated r0 = new ResponseEvaluated(1L,
-                new ResponseMCQ(1L, new HashSet<>(Arrays.asList(1L))), 100, false);
-        BatchEvaluated b0 = new BatchEvaluated(Arrays.asList(r0), 30, false);
+                new ResponseMCQ(1L, Set.of(1L)), 100, false);
+        BatchEvaluated b0 = new BatchEvaluated(List.of(r0), 30, false);
 
         ResponseEvaluated r1 = new ResponseEvaluated(2L,
                 new ResponseFBSQ(2L, "wrong phraseDomain"), 0, false);
-        BatchEvaluated b1 = new BatchEvaluated(Arrays.asList(r1), 50, false);
+        BatchEvaluated b1 = new BatchEvaluated(List.of(r1), 50, false);
 
-        ResponseEvaluated r2 = new ResponseEvaluated(3L, new ResponseFBMQ(3L, new HashSet<>(Arrays.asList(
-            new ResponseFBMQ.Pair(1L, "(correct) Target phraseDomain for FBMQ answer #1"),
-            new ResponseFBMQ.Pair(2L, "(correct) Target phraseDomain for FBMQ answer #2"),
-            new ResponseFBMQ.Pair(3L, "(correct) Target phraseDomain for FBMQ answer #3"),
-            new ResponseFBMQ.Pair(4L, "(correct) Target phraseDomain for FBMQ answer #4")
-        ))), 100, false);
-        BatchEvaluated b2 = new BatchEvaluated(Arrays.asList(r2), 25, false);
+        ResponseEvaluated r2 = new ResponseEvaluated(3L, new ResponseFBMQ(3L, Set.of(
+                new ResponseFBMQ.Pair(1L, "(correct) Target phraseDomain for FBMQ answer #1"),
+                new ResponseFBMQ.Pair(2L, "(correct) Target phraseDomain for FBMQ answer #2"),
+                new ResponseFBMQ.Pair(3L, "(correct) Target phraseDomain for FBMQ answer #3"),
+                new ResponseFBMQ.Pair(4L, "(correct) Target phraseDomain for FBMQ answer #4")
+        )), 100, false);
+        BatchEvaluated b2 = new BatchEvaluated(List.of(r2), 25, false);
 
-        ResponseEvaluated r3 = new ResponseEvaluated(4L, new ResponseMQ(4L, new HashSet<>(Arrays.asList(
-            new ResponseMQ.Triple(1L, 21L, 22L),
-            new ResponseMQ.Triple(2L, 23L, 24L),
-            new ResponseMQ.Triple(3L, 25L, 26L),
-            new ResponseMQ.Triple(4L, 27L, 28L)
-        ))), 100, false);
-        BatchEvaluated b3 = new BatchEvaluated(Arrays.asList(r3), 30, false);
+        ResponseEvaluated r3 = new ResponseEvaluated(4L, new ResponseMQ(4L, Set.of(
+                new ResponseMQ.Triple(1L, 21L, 22L),
+                new ResponseMQ.Triple(2L, 23L, 24L),
+                new ResponseMQ.Triple(3L, 25L, 26L),
+                new ResponseMQ.Triple(4L, 27L, 28L)
+        )), 100, false);
+        BatchEvaluated b3 = new BatchEvaluated(List.of(r3), 30, false);
 
         ResponseEvaluated r4 = new ResponseEvaluated(5L,
-                new ResponseSQ(5L, Arrays.asList(29L, 30L, 31L, 32L, 33L)), 100, false);
-        BatchEvaluated b4 = new BatchEvaluated(Arrays.asList(r4), 15, false);
+                new ResponseSQ(5L, List.of(29L, 30L, 31L, 32L, 33L)), 100, false);
+        BatchEvaluated b4 = new BatchEvaluated(List.of(r4), 15, false);
 
-        progressData.setBatchesEvaluated(Arrays.asList(b0, b1, b2, b3, b4));
+        progressData.setBatchesEvaluated(List.of(b0, b1, b2, b3, b4));
 
         sessionData.setProgressData(progressData);
 
@@ -446,12 +436,11 @@ public class SessionDataSerializerServiceTest extends QuestionGeneratorHelper {
         String expected = new String(encoded, Charset.defaultCharset());
         SessionDataSerializerService serializer = new SessionDataSerializerService(objectMapper);
         String actual = serializer.serialize(sessionData);
-        log.debug("Serialised sessionData (terminal) object = {}", actual);
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.LENIENT);
+        assertEquals(expected, actual, JSONCompareMode.LENIENT);
     }
 
 
-    @Test(timeout = 5000)
+    @Test
     public void deserializeTerminalStateWith1QuestionPerBatchWithLmsTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_TERMINAL);
         byte[] encoded = Files.readAllBytes(json.toPath());

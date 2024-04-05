@@ -1,14 +1,13 @@
 package _functional;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.RatosApplication;
 import ua.edu.ratos._helper.ResponseGeneratorSQHelper;
 import ua.edu.ratos.dao.entity.Result;
@@ -17,7 +16,6 @@ import ua.edu.ratos.dao.entity.ResultTheme;
 import ua.edu.ratos.dao.entity.ResultThemeId;
 import ua.edu.ratos.dao.entity.game.Game;
 import ua.edu.ratos.dao.entity.game.Week;
-import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.domain.response.Response;
@@ -30,10 +28,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class StaticSQServiceTestIT {
@@ -71,7 +68,7 @@ public class StaticSQServiceTestIT {
         }
         // Here you show the last question and collect the last response
         Long questionId = currentBatch.getQuestions().get(0).getQuestionId();
-        Map<Long, Response> response= responseGeneratorSQHelper.getCorrectResponseSQMap(questionsMap, questionId, true);
+        Map<Long, Response> response = responseGeneratorSQHelper.getCorrectResponseSQMap(questionsMap, questionId, true);
         ResultOutDto resultOutDto = genericSessionService.finish(new BatchInDto(response), sessionData);
 
         // Expected result:
@@ -87,18 +84,18 @@ public class StaticSQServiceTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
         final Game game = (Game) em.createQuery("select g from Game g where g.gameId =:gameId").setParameter("gameId", 2L).getSingleResult();
-        Assert.assertNotNull(game);
+        assertNotNull(game);
     }
 
-   //----------------------------------------------------------batched 6------------------------------------------------
+    //----------------------------------------------------------batched 6------------------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_sq_scheme_non_dynamic_batched_6.sql", "/scripts/_functional/case_simple_sq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -147,12 +144,12 @@ public class StaticSQServiceTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 }

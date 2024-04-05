@@ -1,21 +1,19 @@
 package _functional;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.RatosApplication;
 import ua.edu.ratos._helper.ResponseGeneratorMCQHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
 import ua.edu.ratos.dao.entity.ResultTheme;
 import ua.edu.ratos.dao.entity.ResultThemeId;
-import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.service.domain.MetaData;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
@@ -31,10 +29,9 @@ import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DynamicMCQSessionTestIT {
@@ -91,9 +88,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
     @Test
@@ -115,7 +112,7 @@ public class DynamicMCQSessionTestIT {
             // Here you show question and collect response (empty!)
             // Create a correct response!
             Long questionId = currentBatch.getQuestions().get(0).getQuestionId();
-            if (skipCounter==0 && questionId.equals(5L)) {
+            if (skipCounter == 0 && questionId.equals(5L)) {
                 educationalSessionService.skip(5L, sessionData);
                 currentBatch = genericSessionService.next(new BatchInDto(new HashMap<>()), sessionData);
                 skipCounter++;
@@ -146,9 +143,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
     @Test
@@ -170,7 +167,7 @@ public class DynamicMCQSessionTestIT {
             // Here you show question and collect response (empty!)
             // Create a correct response!
             Long questionId = currentBatch.getQuestions().get(0).getQuestionId();
-            if (incorrectCounter==0 && questionId.equals(5L)) {
+            if (incorrectCounter == 0 && questionId.equals(5L)) {
                 Map<Long, Response> response = responseGeneratorMCQHelper.getCorrectResponseMCQMap(questionsMap, questionId, false);
                 currentBatch = genericSessionService.next(new BatchInDto(response), sessionData);
                 incorrectCounter++;
@@ -202,9 +199,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
     //------------------------------------------------Batched all-------------------------------------------------------
@@ -247,9 +244,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
 
@@ -271,7 +268,7 @@ public class DynamicMCQSessionTestIT {
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
             // Here you show question and collect response (empty!)
             // Skip 3 questions and for the rest of them create correct responses!
-            if (skipCounter==0) {
+            if (skipCounter == 0) {
                 educationalSessionService.skip(2L, sessionData);
                 educationalSessionService.skip(5L, sessionData);
                 educationalSessionService.skip(7L, sessionData);
@@ -311,9 +308,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
 
@@ -335,7 +332,7 @@ public class DynamicMCQSessionTestIT {
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
             // Here you show question and collect response (empty!)
             // Skip 3 questions and for the rest of them create correct responses!
-            if (incorrectCounter <3) {
+            if (incorrectCounter < 3) {
                 // Basically here we should sent empty responses for skipped questions!!!
                 // Instead we send the correct answers that will not be counted as correct with this request.
                 Map<Long, Response> response = responseGeneratorMCQHelper.getCorrectResponseMCQMap(questionsMap, currentBatch, true);
@@ -367,9 +364,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
     //---------------------------------------------------Batched 2------------------------------------------------------
@@ -416,9 +413,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
 
@@ -438,7 +435,7 @@ public class DynamicMCQSessionTestIT {
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         int batchCounter = 0;
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
-            if (batchCounter==3) {
+            if (batchCounter == 3) {
                 // Perform skip in 3-d batch
                 Long skippedQuestionId = currentBatch.getQuestions().get(0).getQuestionId();
                 Long answeredQuestionId = currentBatch.getQuestions().get(1).getQuestionId();
@@ -475,9 +472,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
 
@@ -497,7 +494,7 @@ public class DynamicMCQSessionTestIT {
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         int batchCounter = 0;
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
-            if (batchCounter==2) {
+            if (batchCounter == 2) {
                 // Perform skip in 2-d batch
                 Long skipped1QuestionId = currentBatch.getQuestions().get(0).getQuestionId();
                 Long skipped2QuestionId = currentBatch.getQuestions().get(1).getQuestionId();
@@ -534,9 +531,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
     @Test
@@ -555,14 +552,14 @@ public class DynamicMCQSessionTestIT {
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         int batchCounter = 0;
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
-            if (batchCounter==2) {
+            if (batchCounter == 2) {
                 // Perform skip in 2-d batch
                 Long skipped1QuestionId = currentBatch.getQuestions().get(0).getQuestionId();
                 Long answeredQuestionId = currentBatch.getQuestions().get(1).getQuestionId();
                 educationalSessionService.skip(skipped1QuestionId, sessionData);
                 Map<Long, Response> response = responseGeneratorMCQHelper.getCorrectResponseMCQMap(questionsMap, answeredQuestionId, true);
                 currentBatch = genericSessionService.next(new BatchInDto(response), sessionData);
-            } else if (batchCounter==4) {
+            } else if (batchCounter == 4) {
                 Map<Long, Response> response = responseGeneratorMCQHelper.getCorrectResponseMCQMap(questionsMap, currentBatch, true);
                 currentBatch = genericSessionService.next(new BatchInDto(response), sessionData);
             } else {
@@ -595,9 +592,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
     //----------------------------------------------------Batched 3-----------------------------------------------------
@@ -643,9 +640,9 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
 
@@ -665,7 +662,7 @@ public class DynamicMCQSessionTestIT {
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         int batchCounter = 0;
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
-            if (batchCounter==0) {
+            if (batchCounter == 0) {
                 // Perform skip in 0-st batch
                 Long skipped1QuestionId = currentBatch.getQuestions().get(0).getQuestionId();
                 Long answeredQuestionId = currentBatch.getQuestions().get(1).getQuestionId();
@@ -675,7 +672,7 @@ public class DynamicMCQSessionTestIT {
                 Map<Long, Response> response2 = responseGeneratorMCQHelper.getCorrectResponseMCQMap(questionsMap, answered2QuestionId, true);
                 response.putAll(response2);
                 currentBatch = genericSessionService.next(new BatchInDto(response), sessionData);
-            } else if (batchCounter==1) {
+            } else if (batchCounter == 1) {
                 Map<Long, Response> response = responseGeneratorMCQHelper.getCorrectResponseMCQMap(questionsMap, currentBatch, true);
                 currentBatch = genericSessionService.next(new BatchInDto(response), sessionData);
             } else {
@@ -704,8 +701,8 @@ public class DynamicMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 }

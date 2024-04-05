@@ -1,46 +1,37 @@
 package ua.edu.ratos.service._it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.Scheme;
-import ua.edu.ratos.dao.entity.SchemeTheme;
 import ua.edu.ratos.dao.entity.grading.SchemeFourPoint;
-import ua.edu.ratos.dao.entity.grading.SchemeFreePoint;
-import ua.edu.ratos.dao.entity.grading.SchemeTwoPoint;
-import ua.edu.ratos.dao.repository.SchemeRepository;
 import ua.edu.ratos.service.SchemeService;
 import ua.edu.ratos.service.dto.in.SchemeInDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class SchemeServiceTestIT {
 
     private static final String JSON_NEW = "classpath:json/scheme_in_dto_new.json";
     private static final String FIND_WITH_COLLECTIONS = "select s from Scheme s left join fetch s.groups left join fetch s.themes t left join fetch t.settings where s.schemeId=:schemeId";
     private static final String FIND_GRADING_FOUR = "select s from SchemeFourPoint s join fetch s.fourPointGrading where s.schemeId=:schemeId";
-    private static final String FIND_GRADING_FREE = "select s from SchemeFreePoint s join fetch s.freePointGrading where s.schemeId=:schemeId";
-    private static final String FIND_GRADING_TWO = "select s from SchemeTwoPoint s join fetch s.twoPointGrading where s.schemeId=:schemeId";
 
     @PersistenceContext
     private EntityManager em;
@@ -49,15 +40,12 @@ public class SchemeServiceTestIT {
     private SchemeService schemeService;
 
     @Autowired
-    private SchemeRepository schemeRepository;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
 
-    @Test(timeout = 10000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void saveTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_NEW);
         SchemeInDto dto = objectMapper.readValue(json, SchemeInDto.class);
@@ -72,12 +60,12 @@ public class SchemeServiceTestIT {
         ));
         // Verify insertion into scheme_four_point table
         final SchemeFourPoint foundFour = (SchemeFourPoint) em.createQuery(FIND_GRADING_FOUR).setParameter("schemeId", 1L).getSingleResult();
-        assertNotNull("SchemeFourPoint is not found", foundFour);
+        assertNotNull(foundFour, "SchemeFourPoint is not found");
     }
 
-    @Test(timeout = 10000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateNameTest() {
         // Update only name
         schemeService.updateName(1L, "Updated name");
@@ -88,9 +76,9 @@ public class SchemeServiceTestIT {
         ));
     }
 
-    @Test(timeout = 10000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateIsActiveTest() {
         // Deactivate
         schemeService.updateIsActive(1L, false);

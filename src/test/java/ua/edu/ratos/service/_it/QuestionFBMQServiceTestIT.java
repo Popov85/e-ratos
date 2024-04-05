@@ -1,12 +1,12 @@
 package ua.edu.ratos.service._it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.question.QuestionFBMQ;
@@ -18,16 +18,17 @@ import javax.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class QuestionFBMQServiceTestIT {
 
     public static final String JSON_NEW = "classpath:json/question_fbmq_in_dto_new.json";
+
     public static final String FIND = "select q from QuestionFBMQ q join fetch q.answers left join fetch q.helps join fetch q.resources where q.questionId=:questionId";
 
     @PersistenceContext
@@ -39,7 +40,7 @@ public class QuestionFBMQServiceTestIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test(timeout = 10000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/question_fbmq_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void saveTest() throws Exception {

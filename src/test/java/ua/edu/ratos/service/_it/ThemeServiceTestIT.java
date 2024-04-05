@@ -1,30 +1,30 @@
 package ua.edu.ratos.service._it;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.service.ThemeService;
 import ua.edu.ratos.service.dto.out.LevelsOutDto;
 import ua.edu.ratos.service.dto.out.ThemeMapOutDto;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
-import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class ThemeServiceTestIT {
 
     @Autowired
     private ThemeService themeService;
 
-    @Test(timeout = 10000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/theme_map_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getQuestionTypeLevelMapByThemeIdTest() {

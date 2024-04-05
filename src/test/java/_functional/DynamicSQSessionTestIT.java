@@ -1,21 +1,19 @@
 package _functional;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.RatosApplication;
 import ua.edu.ratos._helper.ResponseGeneratorSQHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
 import ua.edu.ratos.dao.entity.ResultTheme;
 import ua.edu.ratos.dao.entity.ResultThemeId;
-import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.domain.response.Response;
@@ -30,10 +28,9 @@ import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DynamicSQSessionTestIT {
@@ -70,15 +67,15 @@ public class DynamicSQSessionTestIT {
         int skipCounter2 = 0;
         while (!currentBatch.isEmpty()) {// even if no batches left launch next to get empty batch out
             Long questionId = currentBatch.getQuestions().get(0).getQuestionId();
-           if (skipCounter==0 && questionId.equals(1L)) {
-               educationalSessionService.skip(questionId, sessionData);
+            if (skipCounter == 0 && questionId.equals(1L)) {
+                educationalSessionService.skip(questionId, sessionData);
                 currentBatch = genericSessionService.next(new BatchInDto(new HashMap<>()), sessionData);
                 skipCounter++;
-            } else if (skipCounter2==0 && questionId.equals(9L)) {
-               educationalSessionService.skip(questionId, sessionData);
-               currentBatch = genericSessionService.next(new BatchInDto(new HashMap<>()), sessionData);
-               skipCounter2++;
-           } else {
+            } else if (skipCounter2 == 0 && questionId.equals(9L)) {
+                educationalSessionService.skip(questionId, sessionData);
+                currentBatch = genericSessionService.next(new BatchInDto(new HashMap<>()), sessionData);
+                skipCounter2++;
+            } else {
                 Map<Long, Response> response = responseGeneratorSQHelper.getCorrectResponseSQMap(questionsMap, questionId, false);
                 currentBatch = genericSessionService.next(new BatchInDto(response), sessionData);
                 // Client just clicked button Next>>
@@ -101,9 +98,9 @@ public class DynamicSQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 
 
@@ -156,8 +153,8 @@ public class DynamicSQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
     }
 }

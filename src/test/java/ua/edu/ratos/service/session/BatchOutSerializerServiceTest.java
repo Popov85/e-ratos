@@ -1,14 +1,13 @@
 package ua.edu.ratos.service.session;
 
-import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.collection.IsCollectionWithSize;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.ObjectContent;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos._helper.QuestionGeneratorHelper;
 import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.dto.session.question.QuestionSessionOutDto;
@@ -20,9 +19,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 
-@Slf4j
-@RunWith(SpringRunner.class)
 @JsonTest
+@ExtendWith(SpringExtension.class)
 public class BatchOutSerializerServiceTest {
 
     public static final String JSON = "/json/batch_out_dto_init.json";
@@ -32,19 +30,16 @@ public class BatchOutSerializerServiceTest {
 
     QuestionGeneratorHelper qGH = new QuestionGeneratorHelper();
 
-    @Test(timeout = 1000L)
+    @Test
     public void serializeTest() throws Exception {
         BatchOutDto batchOutDto = createBatch(createSequence());
-
         // actual test begins
         org.assertj.core.api.Assertions.assertThat(this.json.write(batchOutDto)).isEqualToJson(JSON);
-
     }
 
-    @Test(timeout = 1000L)
+    @Test
     public void deserializeTest() throws Exception {
         ObjectContent<BatchOutDto> read = this.json.read(JSON);
-
         // actual test begins
         BatchOutDto batchOutDto = read.getObject();
         org.hamcrest.MatcherAssert.assertThat("Deserialized object is not equal", batchOutDto, allOf(

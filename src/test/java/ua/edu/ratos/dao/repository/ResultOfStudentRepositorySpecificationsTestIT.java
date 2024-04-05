@@ -1,8 +1,8 @@
 package ua.edu.ratos.dao.repository;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.ResultOfStudent;
 import ua.edu.ratos.dao.repository.specs.ResultOfStudentStaffSpecs;
@@ -22,16 +22,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static ua.edu.ratos.dao.repository.specs.ResultPredicatesUtils.hasSpecs;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class ResultOfStudentRepositorySpecificationsTestIT {
 
     @Autowired
@@ -42,14 +42,14 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
 
     private PersistenceUnitUtil persistenceUnitUtil;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         persistenceUnitUtil = entityManagerFactory.getPersistenceUnitUtil();
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentId1Test() {
         Specification<ResultOfStudent> specs = ResultOfStudentStaffSpecs.ofDepartment(1L);
         Page<ResultOfStudent> page = resultOfStudentRepository.findAll(specs,
@@ -59,18 +59,18 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalPages", equalTo(1)),
                 hasProperty("totalElements", equalTo(6L))));
         page.getContent()
-                .forEach(r ->{
-                    assertTrue("Scheme was not loaded", persistenceUnitUtil.isLoaded(r, "scheme"));
-                    assertTrue("Student was not loaded", persistenceUnitUtil.isLoaded(r, "student"));
-                    assertTrue("ResultDetails was not loaded", persistenceUnitUtil.isLoaded(r, "resultDetails"));
-                    assertTrue("ResultDetails was empty", r.getResultDetails()!=null);
-                    assertTrue("User of Staff was not loaded", persistenceUnitUtil.isLoaded(r.getStudent(), "user"));
+                .forEach(r -> {
+                    assertTrue(persistenceUnitUtil.isLoaded(r, "scheme"), "Scheme was not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(r, "student"), "Student was not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(r, "resultDetails"), "ResultDetails was not loaded");
+                    assertNotNull(r.getResultDetails(), "ResultDetails was empty");
+                    assertTrue(persistenceUnitUtil.isLoaded(r.getStudent(), "user"), "User of Staff was not loaded");
                 });
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentId2Test() {
         Specification<ResultOfStudent> specs = ResultOfStudentStaffSpecs.ofDepartment(2L);
         Page<ResultOfStudent> page = resultOfStudentRepository.findAll(specs,
@@ -80,18 +80,18 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalPages", equalTo(1)),
                 hasProperty("totalElements", equalTo(7L))));
         page.getContent()
-                .forEach(r ->{
-                    assertTrue("Scheme was not loaded", persistenceUnitUtil.isLoaded(r, "scheme"));
-                    assertTrue("Student was not loaded", persistenceUnitUtil.isLoaded(r, "student"));
-                    assertTrue("ResultDetails was not loaded", persistenceUnitUtil.isLoaded(r, "resultDetails"));
-                    assertTrue("ResultDetails was not empty", r.getResultDetails()==null);
-                    assertTrue("User of Staff was not loaded", persistenceUnitUtil.isLoaded(r.getStudent(), "user"));
+                .forEach(r -> {
+                    assertTrue(persistenceUnitUtil.isLoaded(r, "scheme"), "Scheme was not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(r, "student"), "Student was not loaded");
+                    assertTrue(persistenceUnitUtil.isLoaded(r, "resultDetails"), "ResultDetails was not loaded");
+                    assertNull(r.getResultDetails(), "ResultDetails was not empty");
+                    assertTrue(persistenceUnitUtil.isLoaded(r.getStudent(), "user"), "User of Staff was not loaded");
                 });
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByCourseIdTest() {
         // Given: depId = 1L, courseId = 1L
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -108,9 +108,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(6L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsBySchemeIdTest() {
         // Given: depId = 1L, schemeId = 1L
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -127,9 +127,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(2L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByNameTest() {
         // Given: depId = 2L, name = "Den"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -146,9 +146,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(1L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsBySurnameTest() {
         // Given: depId = 2L, surname = "Abram"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -166,9 +166,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
     }
 
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByEmailTest() {
         // Given: depId = 2L, email = "den.abramov@"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -186,9 +186,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(1L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByStudentFacIdTest() {
         // Given: depId = 2L, facId = 1
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -205,9 +205,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(7L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByStudentClassTest() {
         // Given: depId = 2L, studentClass = "Class"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -224,9 +224,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(7L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByStudentYearOfEntranceTest() {
         // Given: depId = 2L, YearOfEntrance = "2020"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -243,9 +243,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(1L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsBySessionEndedTest() {
         // Given: depId = 2L, sessionEnded > = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         String from = "2019-09-01T00:00:00.000Z";
@@ -266,9 +266,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(1L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsBySessionLastedTest() {
         // Given: depId = 2L, sessionLasted =51
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -288,9 +288,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(1L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByGradeTest() {
         // Given: depId = 2L, grade = "5"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -310,9 +310,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(4L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByPercentTest() {
         // Given: depId = 2L, percent > "80"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -332,9 +332,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(4L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByPassedTest() {
         // Given: depId = 2L, passed = "true"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -351,9 +351,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(7L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByNotPassedTest() {
         // Given: depId = 2L, passed = "false"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -370,9 +370,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(0L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByTimeoutedTest() {
         // Given: depId = 2L, timeouted = "false"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -390,9 +390,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
     }
 
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByNotCancelledTest() {
         // Given: depId = 2L, cancelled = "false"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -410,9 +410,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
     }
 
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByLMSTest() {
         // Given: depId = 2L, lms = "true"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -429,9 +429,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(1L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByNotLMSTest() {
         // Given: depId = 2L, lms = "false"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -448,9 +448,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
                 hasProperty("totalElements", equalTo(6L))));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdAndSpecsByPointsTest() {
         // Given: depId = 2L, points = "true"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -469,9 +469,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
 
     //-----------------------------------------------------Report on results--------------------------------------------
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllOfRatosForReportBetweenDatesTest() {
         // Given: all ratos results, between dates "2018-12-20" and "2018-12-31"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -496,9 +496,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
         assertThat("Set of Students Results is not of right size", results, hasSize(5));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllOfOrganisationForReportBetweenDatesTest() {
         // Given: all orgId=1 results, between dates "2019-01-20" and "2019-01-30"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -523,9 +523,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
         assertThat("Set of Students Results is not of right size", results, hasSize(4));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllOfFacultyForReportBetweenDatesTest() {
         // Given: all facId=1 results, between dates "2019-01-01" and "2019-01-30"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -550,9 +550,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
         assertThat("Set of Students Results is not of right size", results, hasSize(5));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllOfDepartmentForReportBetweenDatesTest() {
         // Given: all depId=2 results, between dates "2019-01-01" and "2020-01-01"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -577,9 +577,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
         assertThat("Set of Students Results is not of right size", results, hasSize(7));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllOfDepartmentAndCourseForReportBetweenDatesTest() {
         // Given: all depId=2 results, courseId = 1, between dates "2019-01-01" and "2020-01-01"
         Map<String, SpecsFilter> specsMap = new HashMap<>();
@@ -608,9 +608,9 @@ public class ResultOfStudentRepositorySpecificationsTestIT {
         assertThat("Set of Students Results is not of right size", results, hasSize(4));
     }
 
-    @Test(timeout = 5000)
+    @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_"+ ActiveProfile.NOW+".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllOfDepartmentAndSchemeForReportBetweenDatesTest() {
         // Given: all depId=2 results, schemeId = 4, between dates "2019-01-01" and "2020-01-01"
         Map<String, SpecsFilter> specsMap = new HashMap<>();

@@ -4,7 +4,7 @@ spring:
     database:
       replace: none
   datasource:
-    url: jdbc:mysql://localhost:@TEST_DATABASE_PORT@/ratos3?rewriteBatchedStatements=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:@TEST_DATABASE_PORT@/ratos3?allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: @DATABASE_USER@
     password: @DATABASE_PASSWORD@
     driver-class-name: com.mysql.cj.jdbc.Driver

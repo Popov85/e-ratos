@@ -1,14 +1,13 @@
 package _functional;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.RatosApplication;
 import ua.edu.ratos._helper.ResponseGeneratorMCQHelper;
 import ua.edu.ratos.dao.entity.Result;
@@ -17,7 +16,6 @@ import ua.edu.ratos.dao.entity.ResultTheme;
 import ua.edu.ratos.dao.entity.ResultThemeId;
 import ua.edu.ratos.dao.entity.game.Game;
 import ua.edu.ratos.dao.entity.game.Week;
-import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.domain.response.Response;
@@ -31,10 +29,9 @@ import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class StaticMCQSessionTestIT {
@@ -63,7 +60,7 @@ public class StaticMCQSessionTestIT {
         SessionData sessionData = genericSessionService.start(1L);
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         boolean isLastBatch = currentBatch.isLastBatch();
-        int i=0;
+        int i = 0;
         while (!isLastBatch) {
             // Here you show question and collect response (empty!)
             currentBatch = genericSessionService.next(new BatchInDto(new HashMap<>()), sessionData);
@@ -88,13 +85,13 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a single entry in Week, updated timeSpent
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 
@@ -130,7 +127,7 @@ public class StaticMCQSessionTestIT {
 
         // Expected result:
         assertTrue(resultOutDto.isPassed());
-        assertEquals("100", resultOutDto.getPercent() );
+        assertEquals("100", resultOutDto.getPercent());
         assertEquals("5", resultOutDto.getGrade());
         assertEquals(5, resultOutDto.getPoints().intValue());
         assertNotNull(resultOutDto.getThemeResults());
@@ -141,15 +138,15 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
         final Game game = (Game) em.createQuery("select g from Game g where g.gameId =:gameId").setParameter("gameId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
-        Assert.assertNotNull(game);
+        assertNotNull(week);
+        assertNotNull(game);
     }
 
 
@@ -207,15 +204,15 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
         final Game game = (Game) em.createQuery("select g from Game g where g.gameId =:gameId").setParameter("gameId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
-        Assert.assertNotNull(game);
+        assertNotNull(week);
+        assertNotNull(game);
     }
 
     //-----------------------------------------------------Batched all--------------------------------------------------
@@ -248,17 +245,17 @@ public class StaticMCQSessionTestIT {
         assertNotNull(resultOutDto.getQuestionResults());
 
         // Expected: new single entry in each: Result, ResultDetails, ResultTheme
-         final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId",1L).getSingleResult();
-        final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId",1L).getSingleResult();
+        final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId", 1L).getSingleResult();
+        final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
-        final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId",resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a single entry in Week, updated timeSpent
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 
@@ -292,17 +289,17 @@ public class StaticMCQSessionTestIT {
         assertNotNull(resultOutDto.getQuestionResults());
 
         // Expected: new single entry in each: Result, ResultDetails, ResultTheme
-        final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId",1L).getSingleResult();
-        final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId",1L).getSingleResult();
+        final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId", 1L).getSingleResult();
+        final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
-        final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId",resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a single entry in Week, updated timeSpent
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 
@@ -336,17 +333,17 @@ public class StaticMCQSessionTestIT {
         assertNotNull(resultOutDto.getQuestionResults());
 
         // Expected: new single entry in each: Result, ResultDetails, ResultTheme
-        final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId",1L).getSingleResult();
-        final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId",1L).getSingleResult();
+        final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId", 1L).getSingleResult();
+        final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
-        final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId",resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a single entry in Week, updated timeSpent
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 
@@ -366,7 +363,7 @@ public class StaticMCQSessionTestIT {
         SessionData sessionData = genericSessionService.start(1L);
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         boolean isLastBatch = currentBatch.isLastBatch();
-        int i=0;
+        int i = 0;
         while (!isLastBatch) {
             // Here you show question and collect response (empty!)
             currentBatch = genericSessionService.next(new BatchInDto(new HashMap<>()), sessionData);
@@ -391,13 +388,13 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a single entry in Week, updated timeSpent
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 
@@ -442,15 +439,15 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
         final Game game = (Game) em.createQuery("select g from Game g where g.gameId =:gameId").setParameter("gameId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
-        Assert.assertNotNull(game);
+        assertNotNull(week);
+        assertNotNull(game);
     }
 
 
@@ -495,13 +492,13 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
     //--------------------------------------------------Batched sessions 3 per sheet------------------------------------
@@ -545,13 +542,13 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a single entry in Week, updated timeSpent
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 
@@ -570,7 +567,7 @@ public class StaticMCQSessionTestIT {
         Map<Long, QuestionDomain> questionsMap = sessionData.getQuestionsMap();
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         boolean isLastBatch = currentBatch.isLastBatch();
-        int i=0;
+        int i = 0;
         while (!isLastBatch) {
             // Here you show question and collect response (empty!)
             // Create a correct response!
@@ -599,15 +596,15 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
         final Game game = (Game) em.createQuery("select g from Game g where g.gameId =:gameId").setParameter("gameId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
-        Assert.assertNotNull(game);
+        assertNotNull(week);
+        assertNotNull(game);
     }
 
 
@@ -626,7 +623,7 @@ public class StaticMCQSessionTestIT {
         Map<Long, QuestionDomain> questionsMap = sessionData.getQuestionsMap();
         BatchOutDto currentBatch = sessionData.getCurrentBatch().get();
         boolean isLastBatch = currentBatch.isLastBatch();
-        int i=0;
+        int i = 0;
         while (!isLastBatch) {
             // Here you show question and collect response (empty!)
             // Create a correct response!
@@ -655,13 +652,13 @@ public class StaticMCQSessionTestIT {
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
         ResultThemeId resultThemeId = new ResultThemeId(1L, 1L);
         final ResultTheme resultTheme = (ResultTheme) em.createQuery("select r from ResultTheme r where r.resultThemeId =:resultThemeId").setParameter("resultThemeId", resultThemeId).getSingleResult();
-        Assert.assertNotNull(result);
-        Assert.assertNotNull(resultDetails);
-        Assert.assertNotNull(resultTheme);
+        assertNotNull(result);
+        assertNotNull(resultDetails);
+        assertNotNull(resultTheme);
 
         // Expected gamification changes: a new single entry in Week (points(5), strike(1), timeSpent(~0)), a new single entry in Game (points(5), bonuses (0), timeSpent(~0)),
         final Week week = (Week) em.createQuery("select w from Week w where w.weekId =:weekId").setParameter("weekId", 2L).getSingleResult();
-        Assert.assertNotNull(week);
+        assertNotNull(week);
     }
 
 }

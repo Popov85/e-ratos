@@ -1,20 +1,18 @@
 package _functional;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.RatosApplication;
-import ua.edu.ratos._helper.*;
+import ua.edu.ratos._helper.ResponseGeneratorALLHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
 import ua.edu.ratos.dao.entity.ResultTheme;
-import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.domain.response.Response;
@@ -30,10 +28,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class StaticALLSessionTestIT {
@@ -90,7 +87,7 @@ public class StaticALLSessionTestIT {
 
         // Expected: new single entry in each: Result, ResultDetails, 5 entries in ResultTheme
         final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId", 1L).getSingleResult();
-        Assert.assertNotNull(result);
+        assertNotNull(result);
         assertEquals(1L, result.getResultId().longValue());
         assertTrue(result.isPassed());
         assertFalse(result.isPoints());
@@ -98,13 +95,13 @@ public class StaticALLSessionTestIT {
         assertEquals(5.0, result.getGrade(), 0.1);
 
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
-        Assert.assertNotNull(resultDetails);
+        assertNotNull(resultDetails);
         assertEquals(1L, resultDetails.getDetailId().longValue());
         assertFalse(resultDetails.getJsonData().isEmpty());
         assertTrue(LocalDateTime.now().isAfter(resultDetails.getWhenRemove().minusHours(25)));
 
         final List<ResultTheme> resultThemes = (List<ResultTheme>) em.createQuery("select r from ResultTheme r join r.result rr where rr.resultId =:resultId").setParameter("resultId", 1L).getResultList();
-        Assert.assertEquals(5, resultThemes.size());
+        assertEquals(5, resultThemes.size());
 
         ResultTheme resultTheme1 = resultThemes.get(0);
         assertEquals(1L, resultTheme1.getTheme().getThemeId().longValue());
@@ -132,7 +129,7 @@ public class StaticALLSessionTestIT {
         assertEquals(80.0, resultTheme5.getPercent(), 0.1);
     }
 
-   //-------------------------------------------------Non-Dynamic, batched 2-------------------------------------------
+    //-------------------------------------------------Non-Dynamic, batched 2-------------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_complex_scheme_non_dynamic_batched_2.sql", "/scripts/_functional/case_complex_all.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -170,7 +167,7 @@ public class StaticALLSessionTestIT {
 
         // Expected: new single entry in each: Result, ResultDetails, 5 entries in ResultTheme
         final Result result = (Result) em.createQuery("select r from Result r where r.resultId =:resultId").setParameter("resultId", 1L).getSingleResult();
-        Assert.assertNotNull(result);
+        assertNotNull(result);
         assertEquals(1L, result.getResultId().longValue());
         assertTrue(result.isPassed());
         assertFalse(result.isPoints());
@@ -178,38 +175,38 @@ public class StaticALLSessionTestIT {
         assertEquals(3.0, result.getGrade(), 0.1);
 
         final ResultDetails resultDetails = (ResultDetails) em.createQuery("select r from ResultDetails r where r.detailId =:detailId").setParameter("detailId", 1L).getSingleResult();
-        Assert.assertNotNull(resultDetails);
+        assertNotNull(resultDetails);
         assertEquals(1L, resultDetails.getDetailId().longValue());
         assertFalse(resultDetails.getJsonData().isEmpty());
         assertTrue(LocalDateTime.now().isAfter(resultDetails.getWhenRemove().minusHours(25)));
 
         final List<ResultTheme> resultThemes = (List<ResultTheme>) em.createQuery("select r from ResultTheme r join r.result rr where rr.resultId =:resultId").setParameter("resultId", 1L).getResultList();
-        Assert.assertEquals(5, resultThemes.size());
+        assertEquals(5, resultThemes.size());
 
         ResultTheme resultTheme1 = resultThemes.get(0);
         assertEquals(1L, resultTheme1.getTheme().getThemeId().longValue());
         assertEquals(5, resultTheme1.getQuantity());
-        assertTrue(resultTheme1.getPercent()>=40);
+        assertTrue(resultTheme1.getPercent() >= 40);
 
         ResultTheme resultTheme2 = resultThemes.get(1);
         assertEquals(2L, resultTheme2.getTheme().getThemeId().longValue());
         assertEquals(5, resultTheme2.getQuantity());
-        assertTrue(resultTheme2.getPercent()>=40);
+        assertTrue(resultTheme2.getPercent() >= 40);
 
         ResultTheme resultTheme3 = resultThemes.get(2);
         assertEquals(3L, resultTheme3.getTheme().getThemeId().longValue());
         assertEquals(5, resultTheme3.getQuantity());
-        assertTrue(resultTheme3.getPercent()>=40);
+        assertTrue(resultTheme3.getPercent() >= 40);
 
         ResultTheme resultTheme4 = resultThemes.get(3);
         assertEquals(4L, resultTheme4.getTheme().getThemeId().longValue());
         assertEquals(5, resultTheme4.getQuantity());
-        assertTrue(resultTheme4.getPercent()>=40);
+        assertTrue(resultTheme4.getPercent() >= 40);
 
         ResultTheme resultTheme5 = resultThemes.get(4);
         assertEquals(5L, resultTheme5.getTheme().getThemeId().longValue());
         assertEquals(5, resultTheme5.getQuantity());
-        assertTrue(resultTheme5.getPercent()>=40);
+        assertTrue(resultTheme5.getPercent() >= 40);
     }
 
 }
