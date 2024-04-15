@@ -13,8 +13,8 @@ import ua.edu.ratos.dao.entity.answer.AnswerMQ;
 import ua.edu.ratos.service.AnswerMQService;
 import ua.edu.ratos.service.dto.in.AnswerMQInDto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;

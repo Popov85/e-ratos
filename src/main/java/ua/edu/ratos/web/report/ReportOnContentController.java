@@ -13,7 +13,7 @@ import ua.edu.ratos.service.dto.out.report.ReportOnContent;
 import ua.edu.ratos.service.report.ReportOnContentService;
 import ua.edu.ratos.service.validator.ReportOnContentInDtoValidator;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController

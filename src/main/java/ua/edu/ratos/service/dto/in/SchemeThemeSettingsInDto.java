@@ -3,8 +3,8 @@ package ua.edu.ratos.service.dto.in;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @ToString
 @Getter

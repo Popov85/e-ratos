@@ -12,7 +12,7 @@ import ua.edu.ratos.service.dto.in.AnswerMCQInDto;
 import ua.edu.ratos.service.dto.out.answer.AnswerMCQOutDto;
 import ua.edu.ratos.service.validator.AnswerMCQInDtoValidator;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController

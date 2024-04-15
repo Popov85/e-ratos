@@ -10,6 +10,8 @@ import lombok.Setter;
 import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.session.deserializer.SessionDataDeserializer;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -50,6 +52,7 @@ import java.util.stream.Collectors;
 @JsonDeserialize(using = SessionDataDeserializer.class)
 public class SessionData implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final String BUILD_ERROR = "Failed to create SessionData: wrong object state";
@@ -59,6 +62,7 @@ public class SessionData implements Serializable {
     private final SchemeDomain schemeDomain;
 
     private final List<QuestionDomain> sequence;
+
     @JsonIgnore
     private final Map<Long, QuestionDomain> questionsMap;
 

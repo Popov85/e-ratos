@@ -23,8 +23,8 @@ import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.session.EducationalSessionService;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;

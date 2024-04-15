@@ -3,7 +3,8 @@ package ua.edu.ratos.dao.entity;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,7 @@ import java.io.Serializable;
 @Table(name = "access_level")
 public class Access implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

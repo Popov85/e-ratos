@@ -13,7 +13,7 @@ import ua.edu.ratos.dao.entity.question.Question;
 import ua.edu.ratos.service.QuestionsFileParserService;
 import ua.edu.ratos.service.dto.out.QuestionsParsingResultOutDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;

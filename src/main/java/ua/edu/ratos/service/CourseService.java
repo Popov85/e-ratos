@@ -19,9 +19,9 @@ import ua.edu.ratos.service.transformer.mapper.CourseMapper;
 import ua.edu.ratos.service.transformer.mapper.CourseMinMapper;
 import ua.edu.ratos.service.transformer.CourseTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -2,7 +2,7 @@ package ua.edu.ratos.service.dto.in.patch;
 
 import lombok.Data;
 
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.Positive;
 
 @Data
 public class LongInDto {

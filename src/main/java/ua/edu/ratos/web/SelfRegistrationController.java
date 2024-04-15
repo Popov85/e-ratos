@@ -16,7 +16,7 @@ import ua.edu.ratos.service.dto.out.ClassMinOutDto;
 import ua.edu.ratos.service.dto.out.FacultyMinOutDto;
 import ua.edu.ratos.service.dto.out.OrganisationMinOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Set;
 

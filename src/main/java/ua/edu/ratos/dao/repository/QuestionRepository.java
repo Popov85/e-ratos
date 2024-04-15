@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.QueryHints;
 import ua.edu.ratos.dao.entity.question.*;
 import ua.edu.ratos.dao.repository.projections.TypeAndCount;
 
-import javax.persistence.QueryHint;
-import javax.persistence.Tuple;
+import jakarta.persistence.QueryHint;
+import jakarta.persistence.Tuple;
 import java.util.Optional;
 import java.util.Set;
 

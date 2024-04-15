@@ -10,8 +10,8 @@ import ua.edu.ratos.dao.entity.answer.AnswerFBMQ;
 import ua.edu.ratos.dao.entity.question.QuestionFBMQ;
 import ua.edu.ratos.dao.repository.QuestionRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

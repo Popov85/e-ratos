@@ -5,7 +5,7 @@ values ('training2', 1, 0, 1, 1, 1, 1, 0, 1, 1);
 insert into settings(name, seconds_per_question, strict_seconds_per_question, questions_per_sheet,
                      days_keep_result_details, level_2_coefficient, level_3_coefficient, is_deleted, is_default,
                      created_by, belongs_to)
-values ('default2', 60, 0, 4, 1, 1, 1, 1, 1, 1, 1);
+values ('default2', 60, 0, 4, 1, 1, 1, 0, 1, 1, 1);
 
 insert into scheme(name, is_active, strategy_id, settings_id, mode_id, grading_id, course_id, created, created_by,
                    belongs_to, is_deleted, access_id, options_id)

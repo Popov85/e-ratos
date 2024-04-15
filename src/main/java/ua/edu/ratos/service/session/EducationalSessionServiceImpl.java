@@ -3,6 +3,7 @@ package ua.edu.ratos.service.session;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.edu.ratos.config.properties.AppProperties;
 import ua.edu.ratos.dao.entity.Scheme;
 import ua.edu.ratos.dao.entity.SessionPreserved;
@@ -23,9 +24,8 @@ import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.dto.session.question.QuestionSessionOutDto;
 import ua.edu.ratos.service.transformer.mapper.HelpMapper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.Optional;
 
 @Service

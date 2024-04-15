@@ -16,9 +16,9 @@ import ua.edu.ratos.service.dto.session.question.QuestionSessionMinOutDto;
 import ua.edu.ratos.service.dto.session.question.QuestionSessionOutDto;
 import ua.edu.ratos.service.transformer.UserQuestionStarredTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 
 @Service

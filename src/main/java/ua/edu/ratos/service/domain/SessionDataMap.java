@@ -7,6 +7,7 @@ import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.web.exception.SessionAlreadyOpenedException;
 import ua.edu.ratos.web.exception.SessionNotFoundException;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +24,14 @@ import java.util.Map;
 @Getter
 public class SessionDataMap implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * Key - schemeId;
      * Value - corresponding SessionData object
      */
-    private Map<Long, SessionData> openedSessions = new HashMap<>();
+    private final Map<Long, SessionData> openedSessions = new HashMap<>();
 
     /**
      * Checks if the requested schemeId is already present in the sessionDataMap;
@@ -54,6 +56,12 @@ public class SessionDataMap implements Serializable {
         controlAndThrow(schemeId);
         openedSessions.put(schemeId, sessionData);
         log.debug("Added sessionData to the map for schemeId = {}, total schemeIds in map = {}",
+                schemeId, getOpenedSessions().size());
+    }
+
+    public void replace(@NonNull final Long schemeId, @NonNull final SessionData sessionData) {
+        openedSessions.put(schemeId, sessionData);
+        log.debug("Replaced sessionData to the map for schemeId = {}, total schemeIds in map = {}",
                 schemeId, getOpenedSessions().size());
     }
 

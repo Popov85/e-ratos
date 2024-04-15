@@ -8,7 +8,7 @@ import ua.edu.ratos.service.UserService;
 import ua.edu.ratos.service.dto.in.EmailInDto;
 import ua.edu.ratos.service.dto.in.patch.StringInDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController

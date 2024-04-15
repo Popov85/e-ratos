@@ -11,8 +11,8 @@ import ua.edu.ratos.dao.entity.grading.Grading;
 import ua.edu.ratos.dao.repository.SchemeRepository;
 import ua.edu.ratos.service.grading.SchemeGradingManagerService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;

@@ -4,54 +4,40 @@
     <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <property name="PATH_HOME" value="logs" />
-
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} -%msg%n</pattern>
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${PATH_HOME}/ratos-%d{yyyy-MM-dd}.log</fileNamePattern>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} -%msg%n</pattern>
-        </encoder>
-    </appender>
+    <springProfile name="prod, stage">
 
-    <springProfile name="prod">
         <root level="ERROR">
-            <appender-ref ref="FILE"/>
             <appender-ref ref="CONSOLE"/>
         </root>
+
         <logger name="ua.edu.ratos" additivity="false" level="WARN">
-            <appender-ref ref="FILE"/>
             <appender-ref ref="CONSOLE"/>
         </logger>
-    </springProfile>
 
-    <springProfile name="stage">
-        <root level="ERROR">
-            <appender-ref ref="FILE"/>
-            <appender-ref ref="CONSOLE"/>
-        </root>
-        <logger name="ua.edu.ratos" additivity="false" level="INFO">
-            <appender-ref ref="FILE"/>
-            <appender-ref ref="CONSOLE"/>
-        </logger>
     </springProfile>
 
     <springProfile name="dev">
-        <root level="ERROR">
+
+        <root level="WARN">
             <appender-ref ref="CONSOLE"/>
         </root>
+
         <logger name="ua.edu.ratos" additivity="false" level="DEBUG">
             <appender-ref ref="CONSOLE"/>
         </logger>
 
         <logger name="org.springframework.boot" additivity="false" level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <!--For logging 400 errors-->
+        <logger name="org.springframework.web.servlet.mvc.method.annotation" additivity="false" level="WARN">
             <appender-ref ref="CONSOLE"/>
         </logger>
 
@@ -109,9 +95,11 @@
         <logger name="org.flywaydb" additivity="false" level="INFO">
             <appender-ref ref="CONSOLE"/>
         </logger>
+
     </springProfile>
 
     <springProfile name="h2, mysql">
+
         <root level="ERROR">
             <appender-ref ref="CONSOLE"/>
         </root>
@@ -158,6 +146,7 @@
         <logger name="org.flywaydb" additivity="false" level="WARN">
             <appender-ref ref="CONSOLE"/>
         </logger>
+
     </springProfile>
 
 </configuration>

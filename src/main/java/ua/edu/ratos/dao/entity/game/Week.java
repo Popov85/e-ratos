@@ -3,7 +3,7 @@ package ua.edu.ratos.dao.entity.game;
 import lombok.*;
 import ua.edu.ratos.dao.entity.Student;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 /**

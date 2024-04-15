@@ -3,7 +3,7 @@ package ua.edu.ratos.service.dto.in;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.Positive;
 
 @Getter
 @Setter

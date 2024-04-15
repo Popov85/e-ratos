@@ -16,9 +16,9 @@ import ua.edu.ratos.service.dto.out.HelpOutDto;
 import ua.edu.ratos.service.transformer.mapper.HelpMapper;
 import ua.edu.ratos.service.transformer.HelpTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import java.util.Set;
 import java.util.stream.Collectors;
 

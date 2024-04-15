@@ -92,15 +92,15 @@ VALUES ('lms', 0, 0.5, 1, 3, 1, 1, 1);
 INSERT INTO settings (name, seconds_per_question, strict_seconds_per_question, questions_per_sheet, days_keep_result_details, level_2_coefficient, level_3_coefficient, is_deleted, is_default, created_by, belongs_to)
 VALUES ('default', 60, 0, 1, 1, 1, 1, 0, 1, 1, 1);
 
-INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to)
-VALUES ('exam', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
-INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to)
-VALUES ('training', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to, is_deleted)
+VALUES ('exam', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0);
+INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to, is_deleted)
+VALUES ('training', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
 
 INSERT INTO options (name, display_questions_left, display_batches_left, display_current_score, display_effective_score, display_progress, display_motivational_messages, display_result_score, display_result_mark, display_time_spent, display_result_themes, display_result_questions, is_deleted, is_default, created_by, belongs_to)
 VALUES ('exam', 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1);
 INSERT INTO options (name, display_questions_left, display_batches_left, display_current_score, display_effective_score, display_progress, display_motivational_messages, display_result_score, display_result_mark, display_time_spent, display_result_themes, display_result_questions, is_deleted, is_default, created_by, belongs_to)
-VALUES ('training', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+VALUES ('training', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1);
 
 INSERT INTO settings_fbq (name, words_limit, symbols_limit, is_numeric, is_typo_allowed, is_case_sensitive, lang_id, staff_id)
 VALUES ('eng default', 5, 100, 0, 0, 0, 1, 1);

@@ -3,7 +3,7 @@ package ua.edu.ratos.dao.entity.game;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import ua.edu.ratos.dao.entity.Student;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

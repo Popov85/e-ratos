@@ -11,7 +11,7 @@ import ua.edu.ratos.service.ModeService;
 import ua.edu.ratos.service.dto.in.ModeInDto;
 import ua.edu.ratos.service.dto.out.ModeOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Set;
 

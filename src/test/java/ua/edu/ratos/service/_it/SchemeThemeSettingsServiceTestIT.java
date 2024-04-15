@@ -13,8 +13,8 @@ import ua.edu.ratos.dao.entity.SchemeThemeSettings;
 import ua.edu.ratos.service.SchemeThemeSettingsService;
 import ua.edu.ratos.service.dto.in.SchemeThemeSettingsInDto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;

@@ -15,31 +15,30 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.15</version>
+        <version>3.2.4</version>
     </parent>
 
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.security.oauth>2.3.8.RELEASE</spring.security.oauth>
+        <spring.security.oauth>2.5.2.RELEASE</spring.security.oauth>
         <mysql.connector.version>8.3.0</mysql.connector.version>
         <mapper.version>2.1.0</mapper.version>
         <commons-io.version>2.15.1</commons-io.version>
         <char.detector>1.0.3</char.detector>
-        <metamodel>5.4.1.Final</metamodel>
-        <openapi-version>1.8.0</openapi-version>
-        <lombok>1.18.26</lombok>
-        <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+        <metamodel>6.4.4.Final</metamodel>
+        <openapi-version>2.2.0</openapi-version>
+        <lombok>1.18.30</lombok>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <maven.failsafe.plugin.version>3.2.5</maven.failsafe.plugin.version>
         <jib.version>3.4.1</jib.version>
-        <flyway.version>7.7.3</flyway.version>
-        <apache.maven.compiler.plugin.version>3.8.1</apache.maven.compiler.plugin.version>
+        <flyway.version>9.22.3</flyway.version>
+        <apache.maven.compiler.plugin.version>3.10.1</apache.maven.compiler.plugin.version>
         <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
     </properties>
 
-    <!--See for all SpringBoot managed dependencies https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/2.5.0-->
     <dependencies>
 
         <dependency>
@@ -99,10 +98,10 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
+       <!-- <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-jdbc</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.session</groupId>
@@ -121,7 +120,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jcache</artifactId>
         </dependency>
         <dependency>
@@ -134,13 +133,17 @@
             <artifactId>jsonassert</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
@@ -181,15 +184,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${openapi-version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${openapi-version}</version>
         </dependency>
 
         <dependency>
@@ -237,7 +240,7 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                         <path>
-                            <groupId>org.hibernate</groupId>
+                            <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
                             <version>${metamodel}</version>
                         </path>
@@ -309,6 +312,7 @@
                 <version>${flyway.version}</version>
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/ratos3?useSsl=false</url>
+                    <cleanDisabled>false</cleanDisabled>
                 </configuration>
             </plugin>
         </plugins>

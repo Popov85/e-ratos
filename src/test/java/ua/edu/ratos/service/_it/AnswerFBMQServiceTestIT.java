@@ -14,8 +14,8 @@ import ua.edu.ratos.dao.entity.answer.AnswerFBMQ;
 import ua.edu.ratos.service.AnswerFBMQService;
 import ua.edu.ratos.service.dto.in.AnswerFBMQInDto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;

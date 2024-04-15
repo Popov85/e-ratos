@@ -14,8 +14,8 @@ import ua.edu.ratos.service.dto.in.CourseInDto;
 import ua.edu.ratos.service.dto.in.LMSCourseInDto;
 import ua.edu.ratos.service.transformer.CourseTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.OffsetDateTime;
 
 @Component

@@ -10,7 +10,7 @@ import ua.edu.ratos.service.FreePointGradingService;
 import ua.edu.ratos.service.dto.in.FreePointGradingInDto;
 import ua.edu.ratos.service.dto.out.grading.FreePointGradingOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

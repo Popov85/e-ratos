@@ -9,7 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos.ActiveProfile;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;

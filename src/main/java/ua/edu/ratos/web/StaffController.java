@@ -14,7 +14,7 @@ import ua.edu.ratos.service.dto.in.StaffInDto;
 import ua.edu.ratos.service.dto.in.StaffUpdInDto;
 import ua.edu.ratos.service.dto.out.StaffOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

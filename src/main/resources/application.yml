@@ -26,21 +26,20 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
         show_sql: false
         format_sql: true
         cache:
-          use_second_level_cache: ${HIBERNATE_ENABLE_2LC:true}
-          use_query_cache: ${HIBERNATE_ENABLE_2LC:true}
+          use_second_level_cache: ${HIBERNATE_ENABLE_2LC:false}
+          use_query_cache: ${HIBERNATE_ENABLE_2LC:false}
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-          javax:
+          jakarta:
             cache:
               provider: org.ehcache.jsr107.EhcacheCachingProvider
-        javax:
+        jakarta:
           cache:
             uri: classpath:ehcache.xml
-      javax:
+      jakarta:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
@@ -63,29 +62,25 @@ spring:
     caffeine:
       spec: maximumSize=10000,expireAfterAccess=1d
   session:
-    store-type: ${SPRING_SESSION_STORE_TYPE:none}
-    jdbc:
-      cleanup-cron: "0 * * * * *"
-      initialize-schema: embedded
-      schema: classpath:org/springframework/session/jdbc/schema-mysql.sql
-      table-name: SPRING_SESSION
+    #jdbc:
+      #cleanup-cron: "0 * * * * *"
+      #initialize-schema: always
+      #schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
+      #table-name: SPRING_SESSION
     redis:
-      cleanup-cron: "0 * * * * *"
+      cleanup-cron: "59 59 23 * * *"
+      repository-type: indexed
       flush-mode: on_save
       namespace: spring:session
-  redis:
-    host: ${REDIS_HOST}
-    password: ${REDIS_SECRET}
-    port: ${REDIS_PORT}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      password: ${REDIS_SECRET}
+      port: ${REDIS_PORT}
   flyway:
-    locations: classpath:db/migration
     enabled: true
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
+    clean-disabled: false
+    locations: classpath:db/migration
 
 management:
   health:
@@ -95,8 +90,8 @@ management:
 ratos:
   init:
     locale: EN
-    re_init: false
-    populate: false
+    re_init: true
+    populate: true
     cache: ${RATOS_INIT_CACHE}
     cache_threads: ${RATOS_INIT_CACHE_THREADS}
   session:

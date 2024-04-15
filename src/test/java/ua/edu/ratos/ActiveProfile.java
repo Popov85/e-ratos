@@ -10,5 +10,5 @@ public final class ActiveProfile {
      * Make sure the value is equal to the value of
      * <i>spring.profiles.active</i> property from test application.properties
      */
-    public static final String NOW = "h2";
+    public static final String NOW = "mysql";
 }

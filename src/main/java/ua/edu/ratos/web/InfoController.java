@@ -35,6 +35,7 @@ public class InfoController {
     //----------------------------------------------------Scheme Info---------------------------------------------------
     @GetMapping(value = "/schemes/{schemeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SchemeInfoOutDto> findSchemeForInfo(@PathVariable Long schemeId){
+        log.debug("SchemeInfo for ID = {} requested..", schemeId);
         SchemeInfoOutDto info = schemeService.findByIdForInfo(schemeId);
         log.debug("SchemeInfo = {}", info);
         return ResponseEntity.ok(info);

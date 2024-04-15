@@ -15,7 +15,7 @@ import ua.edu.ratos.service.dto.out.report.QuantityOfMaterials;
 import ua.edu.ratos.service.dto.out.report.ReportOnContent;
 import ua.edu.ratos.service.dto.out.report.ReportOnContentPiece;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;

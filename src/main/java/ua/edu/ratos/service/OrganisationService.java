@@ -12,7 +12,7 @@ import ua.edu.ratos.service.dto.out.OrganisationMinOutDto;
 import ua.edu.ratos.service.transformer.mapper.OrganisationMapper;
 import ua.edu.ratos.service.transformer.mapper.OrganisationMinMapper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

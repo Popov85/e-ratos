@@ -15,7 +15,7 @@ import ua.edu.ratos.service.StudentService;
 import ua.edu.ratos.service.dto.in.StudentInDto;
 import ua.edu.ratos.service.dto.out.StudOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 
 @Slf4j

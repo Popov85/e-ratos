@@ -8,8 +8,8 @@ import ua.edu.ratos.config.TrackTime;
 import ua.edu.ratos.dao.entity.Resource;
 import ua.edu.ratos.dao.entity.Staff;
 import ua.edu.ratos.dao.repository.ResourceRepository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 

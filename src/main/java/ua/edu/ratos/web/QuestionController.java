@@ -11,7 +11,7 @@ import ua.edu.ratos.service.dto.in.patch.LevelInDto;
 import ua.edu.ratos.service.dto.in.patch.StringInDto;
 import ua.edu.ratos.service.dto.out.question.QuestionMCQOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

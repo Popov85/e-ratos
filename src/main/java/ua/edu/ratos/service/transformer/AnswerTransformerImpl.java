@@ -15,8 +15,8 @@ import ua.edu.ratos.dao.entity.question.QuestionSQ;
 import ua.edu.ratos.service.dto.in.*;
 import ua.edu.ratos.service.transformer.AnswerTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Component
 @AllArgsConstructor

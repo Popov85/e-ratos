@@ -18,9 +18,9 @@ import ua.edu.ratos.service.session.SessionDataSerializerService;
 import ua.edu.ratos.service.session.TimingService;
 import ua.edu.ratos.service.transformer.mapper.SessionPreservedMapper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 
 @Service

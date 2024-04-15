@@ -14,7 +14,7 @@ import ua.edu.ratos.service.dto.out.ResourceOutDto;
 import ua.edu.ratos.service.transformer.mapper.ResourceMapper;
 import ua.edu.ratos.service.transformer.ResourceTransformer;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

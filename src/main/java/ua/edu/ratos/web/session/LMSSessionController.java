@@ -14,8 +14,8 @@ import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.lti.LTIOutcomeService;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;;
+import jakarta.servlet.http.HttpSession;;
 
 @Slf4j
 @RestController

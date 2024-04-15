@@ -9,8 +9,8 @@ import ua.edu.ratos.dao.entity.*;
 import ua.edu.ratos.dao.entity.answer.AnswerSQ;
 import ua.edu.ratos.dao.entity.question.QuestionSQ;
 import ua.edu.ratos.dao.repository.QuestionRepository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 

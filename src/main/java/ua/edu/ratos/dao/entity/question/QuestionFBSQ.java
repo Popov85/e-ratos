@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import ua.edu.ratos.dao.entity.answer.AnswerFBSQ;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Setter
 @Getter

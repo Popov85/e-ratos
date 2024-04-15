@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import ua.edu.ratos.dao.entity.lms.LMS;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

@@ -36,6 +36,7 @@ public class BatchEvaluatorService {
      * @return result of evaluation as a map of IDs (from BatchOutDto in SessionData) and ResponseEvaluated
      */
     public List<ResponseEvaluated> doEvaluate(@NonNull final BatchInDto batchInDto, @NonNull final SessionData sessionData) {
+        //log.debug("Batch to evaluate = {}, current batch = {}", batchInDto, sessionData.getCurrentBatch());
         if (!sessionData.getCurrentBatch().isPresent() || sessionData.getCurrentBatch().get().getQuestions().isEmpty())
             throw new IllegalArgumentException(EMPTY_BATCH_OUT_EXCEPTION);
 

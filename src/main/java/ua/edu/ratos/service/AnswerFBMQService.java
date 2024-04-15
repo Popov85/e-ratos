@@ -8,7 +8,7 @@ import ua.edu.ratos.dao.repository.answer.AnswerFBMQRepository;
 import ua.edu.ratos.service.dto.in.AnswerFBMQInDto;
 import ua.edu.ratos.service.transformer.AnswerTransformer;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor

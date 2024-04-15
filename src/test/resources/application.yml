@@ -11,8 +11,9 @@ spring:
   application:
     name: ratos
   profiles:
-    active: h2
+    active: mysql
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: none
     properties:
@@ -22,10 +23,10 @@ spring:
           use_query_cache: false
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-          javax:
+          jakarta:
             cache:
               provider: org.ehcache.jsr107.EhcacheCachingProvider
-      javax:
+      jakarta:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
@@ -45,14 +46,9 @@ spring:
     caffeine:
       spec: maximumSize=10000,expireAfterAccess=14d
   session:
-    store-type: none
-    jdbc:
-      cleanup-cron: 0 * * * * *
-      initialize-schema: embedded
-      schema: classpath:org/springframework/session/jdbc/schema-mysql.sql
-      table-name: SPRING_SESSION
     redis:
-      cleanup-cron: 0 * * * * *
+      cleanup-cron: 59 59 23 * * *
+      repository-type: indexed
       flush-mode: on_save
       namespace: spring:session
   web:
@@ -62,12 +58,6 @@ spring:
           max-age: 30d
   flyway:
     enabled: true
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
 
 management:
   health:

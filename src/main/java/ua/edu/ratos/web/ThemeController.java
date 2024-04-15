@@ -14,7 +14,7 @@ import ua.edu.ratos.service.dto.out.ThemeMapOutDto;
 import ua.edu.ratos.service.dto.out.ThemeMinOutDto;
 import ua.edu.ratos.service.dto.out.ThemeOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

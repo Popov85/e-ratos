@@ -12,8 +12,8 @@ import ua.edu.ratos.security.SecurityUtils;
 import ua.edu.ratos.service.dto.in.FreePointGradingInDto;
 import ua.edu.ratos.service.transformer.FreePointGradingTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Component
 @AllArgsConstructor

@@ -4,8 +4,8 @@ import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 import ua.edu.ratos.dao.entity.*;
 
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
 
 
 public class ResultOfStudentSelfSpecs {

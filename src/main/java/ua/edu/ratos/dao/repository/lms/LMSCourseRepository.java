@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ua.edu.ratos.dao.entity.lms.LMSCourse;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.util.Optional;
 import java.util.Set;
 

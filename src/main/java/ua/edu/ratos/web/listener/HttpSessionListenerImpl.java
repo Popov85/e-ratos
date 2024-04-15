@@ -7,9 +7,9 @@ import ua.edu.ratos.config.properties.AppProperties;
 import ua.edu.ratos.service.domain.SessionDataMap;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 
 /**
  * Too long inactivity case.

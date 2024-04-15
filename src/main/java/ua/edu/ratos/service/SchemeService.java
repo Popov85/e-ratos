@@ -22,7 +22,7 @@ import ua.edu.ratos.service.transformer.mapper.SchemeMapper;
 import ua.edu.ratos.service.transformer.mapper.SchemeMinMapper;
 import ua.edu.ratos.service.transformer.mapper.SchemeShortMapper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

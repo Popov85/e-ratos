@@ -16,8 +16,8 @@ import ua.edu.ratos.dao.entity.ResultOfStudent;
 import ua.edu.ratos.dao.repository.specs.ResultOfStudentStaffSpecs;
 import ua.edu.ratos.dao.repository.specs.SpecsFilter;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnitUtil;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnitUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

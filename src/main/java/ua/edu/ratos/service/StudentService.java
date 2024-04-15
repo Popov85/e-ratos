@@ -15,7 +15,7 @@ import ua.edu.ratos.service.dto.out.StudOutDto;
 import ua.edu.ratos.service.transformer.mapper.StudMapper;
 import ua.edu.ratos.service.transformer.StudTransformer;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor

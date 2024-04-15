@@ -8,8 +8,8 @@ import ua.edu.ratos.dao.repository.SchemeFourPointRepository;
 import ua.edu.ratos.service.dto.out.grading.FourPointGradingOutDto;
 import ua.edu.ratos.service.transformer.mapper.FourPointGradingMapper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 @AllArgsConstructor

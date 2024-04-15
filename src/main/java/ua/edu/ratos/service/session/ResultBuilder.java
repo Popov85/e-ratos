@@ -14,7 +14,7 @@ import ua.edu.ratos.service.domain.question.QuestionDomain;
 import ua.edu.ratos.service.session.grade.GradedResult;
 import ua.edu.ratos.service.transformer.mapper.UserMapper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

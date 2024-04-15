@@ -15,7 +15,7 @@ import ua.edu.ratos.service.PhraseService;
 import ua.edu.ratos.service.dto.in.PhraseInDto;
 import ua.edu.ratos.service.dto.out.PhraseOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 
 @Slf4j

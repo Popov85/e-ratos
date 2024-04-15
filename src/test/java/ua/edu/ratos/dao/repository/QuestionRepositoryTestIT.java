@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.question.QuestionMCQ;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.util.Optional;
 import java.util.Set;
 

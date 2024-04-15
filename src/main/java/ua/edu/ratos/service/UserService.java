@@ -9,7 +9,7 @@ import ua.edu.ratos.dao.entity.User;
 import ua.edu.ratos.dao.repository.UserRepository;
 import ua.edu.ratos.service.dto.in.EmailInDto;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 /**
  * Technically we should allow editing users of org, fac, dep ONLY by corresponding admins,

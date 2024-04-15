@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Range;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.util.Objects;
 
 @Getter

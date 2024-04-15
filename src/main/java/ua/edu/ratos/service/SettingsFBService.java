@@ -13,7 +13,7 @@ import ua.edu.ratos.service.dto.out.SettingsFBOutDto;
 import ua.edu.ratos.service.transformer.mapper.SettingsFBMapper;
 import ua.edu.ratos.service.transformer.SettingsFBTransformer;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor

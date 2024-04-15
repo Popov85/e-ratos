@@ -11,7 +11,7 @@ import ua.edu.ratos.service.PositionService;
 import ua.edu.ratos.service.dto.in.PositionInDto;
 import ua.edu.ratos.service.dto.out.PositionOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Set;
 

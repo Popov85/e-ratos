@@ -15,7 +15,7 @@ import ua.edu.ratos.service.dto.in.GroupInDto;
 import ua.edu.ratos.service.dto.out.GroupExtendedOutDto;
 import ua.edu.ratos.service.dto.out.GroupOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 
 @Slf4j

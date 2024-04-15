@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ua.edu.ratos.dao.entity.*;
 import ua.edu.ratos.dao.entity.Clazz;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Optional;
 

@@ -15,7 +15,7 @@ import ua.edu.ratos.service.dto.out.QuestionsParsingResultOutDto;
 import ua.edu.ratos.service.dto.out.question.QuestionMCQOutDto;
 import ua.edu.ratos.service.validator.QuestionMCQInDtoValidator;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.IOException;
 
 @Slf4j

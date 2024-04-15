@@ -12,7 +12,7 @@ import ua.edu.ratos.service.dto.in.patch.StringInDto;
 import ua.edu.ratos.service.dto.out.LMSMinOutDto;
 import ua.edu.ratos.service.dto.out.LMSOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

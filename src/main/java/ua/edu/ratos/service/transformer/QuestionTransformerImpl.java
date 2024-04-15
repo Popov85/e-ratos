@@ -12,9 +12,9 @@ import ua.edu.ratos.service.dto.in.*;
 import ua.edu.ratos.service.transformer.AnswerTransformer;
 import ua.edu.ratos.service.transformer.QuestionTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import java.util.Collection;
 
 @Component

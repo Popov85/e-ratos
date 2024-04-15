@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.edu.ratos.service.AnswerFBSQService;
 import ua.edu.ratos.service.dto.in.AnswerFBSQInDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController

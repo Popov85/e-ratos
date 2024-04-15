@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Setter
@@ -19,8 +19,8 @@ public class ResultOfStudentTheme implements Serializable {
     @EmbeddedId
     private ResultThemeId resultThemeId = new ResultThemeId();
 
-    @MapsId("questionId")
-    @ManyToOne()
+    @MapsId("resultId")
+    @ManyToOne
     @JoinColumn(name = "result_id")
     private ResultOfStudent result;
 

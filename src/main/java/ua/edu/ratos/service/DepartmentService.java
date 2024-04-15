@@ -14,7 +14,7 @@ import ua.edu.ratos.service.dto.out.DepartmentOutDto;
 import ua.edu.ratos.service.transformer.mapper.DepartmentMapper;
 import ua.edu.ratos.service.transformer.mapper.DepartmentMinMapper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

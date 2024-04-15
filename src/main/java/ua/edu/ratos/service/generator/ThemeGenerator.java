@@ -8,8 +8,8 @@ import ua.edu.ratos.config.TrackTime;
 import ua.edu.ratos.dao.entity.*;
 import ua.edu.ratos.dao.repository.ThemeRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

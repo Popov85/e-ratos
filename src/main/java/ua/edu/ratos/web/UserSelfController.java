@@ -8,7 +8,7 @@ import ua.edu.ratos.service.UserSelfService;
 import ua.edu.ratos.service.dto.in.PasswordsInDto;
 import ua.edu.ratos.service.dto.in.UserMinInDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController

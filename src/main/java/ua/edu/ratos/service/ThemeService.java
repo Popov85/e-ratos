@@ -21,7 +21,7 @@ import ua.edu.ratos.service.transformer.*;
 import ua.edu.ratos.service.transformer.mapper.ThemeMapper;
 import ua.edu.ratos.service.transformer.mapper.ThemeMinMapper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

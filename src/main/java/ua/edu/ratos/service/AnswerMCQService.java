@@ -11,7 +11,7 @@ import ua.edu.ratos.service.dto.out.answer.AnswerMCQOutDto;
 import ua.edu.ratos.service.transformer.mapper.AnswerMapper;
 import ua.edu.ratos.service.transformer.AnswerTransformer;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor

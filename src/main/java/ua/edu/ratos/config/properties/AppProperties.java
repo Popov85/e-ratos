@@ -1,5 +1,7 @@
 package ua.edu.ratos.config.properties;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,11 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.DayOfWeek;
-import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 @Getter

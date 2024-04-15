@@ -20,9 +20,9 @@ import ua.edu.ratos.service.transformer.mapper.GroupExtMapper;
 import ua.edu.ratos.service.transformer.mapper.GroupMapper;
 import ua.edu.ratos.service.transformer.GroupTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 @AllArgsConstructor

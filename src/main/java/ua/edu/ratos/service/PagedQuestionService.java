@@ -12,7 +12,7 @@ import ua.edu.ratos.security.SecurityUtils;
 import ua.edu.ratos.service.dto.out.question.*;
 import ua.edu.ratos.service.transformer.mapper.QuestionMapper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 /**
  * For future references, when the quantity if questions per theme will be measured in 1000-10000;

@@ -11,7 +11,7 @@ import ua.edu.ratos.ActiveProfile;
 import ua.edu.ratos.dao.entity.lms.LMSCourse;
 import ua.edu.ratos.dao.repository.lms.LMSCourseRepository;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.util.Optional;
 import java.util.Set;
 

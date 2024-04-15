@@ -3,7 +3,7 @@ package ua.edu.ratos.dao.repository.specs;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 import ua.edu.ratos.dao.entity.*;
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 
 /**
  * https://stackoverflow.com/questions/30630642/querying-a-nullable-onetoone-relationship-with-jpa

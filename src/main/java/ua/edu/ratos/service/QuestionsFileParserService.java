@@ -21,8 +21,8 @@ import ua.edu.ratos.service.parsers.QuestionsParsingResult;
 import ua.edu.ratos.service.transformer.QuestionsParsingResultTransformer;
 import ua.edu.ratos.service.utils.CharsetDetector;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;

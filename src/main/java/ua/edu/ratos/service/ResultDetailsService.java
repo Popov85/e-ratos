@@ -10,8 +10,8 @@ import ua.edu.ratos.dao.repository.ResultDetailsRepository;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.session.SessionDataSerializerService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

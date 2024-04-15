@@ -16,7 +16,7 @@ import ua.edu.ratos.service.dto.in.patch.StringInDto;
 import ua.edu.ratos.service.dto.in.patch.UrlInDto;
 import ua.edu.ratos.service.dto.out.ResourceOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

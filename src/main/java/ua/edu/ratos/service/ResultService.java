@@ -12,8 +12,8 @@ import ua.edu.ratos.dao.entity.lms.LMS;
 import ua.edu.ratos.dao.repository.ResultRepository;
 import ua.edu.ratos.service.domain.ResultDomain;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.OffsetDateTime;
 
 @Service

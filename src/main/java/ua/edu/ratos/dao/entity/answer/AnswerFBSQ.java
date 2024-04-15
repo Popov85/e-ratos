@@ -5,7 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ua.edu.ratos.dao.entity.Phrase;
 import ua.edu.ratos.dao.entity.SettingsFB;
 import ua.edu.ratos.dao.entity.question.QuestionFBSQ;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;

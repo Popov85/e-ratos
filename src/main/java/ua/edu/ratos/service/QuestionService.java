@@ -16,8 +16,8 @@ import ua.edu.ratos.service.dto.out.question.*;
 import ua.edu.ratos.service.transformer.mapper.QuestionMapper;
 import ua.edu.ratos.service.transformer.QuestionTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

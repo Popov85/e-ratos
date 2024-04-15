@@ -31,7 +31,7 @@ public class OptionsRepositoryTestIT {
     @Sql(scripts = {"/scripts/init.sql", "/scripts/options_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllDefaultTest() {
-        assertThat("Set of default Options is not of size = 1", optionsRepository.findAllDefault(), hasSize(1));
+        assertThat("Set of default Options is not of size = 1", optionsRepository.findAllDefault(), hasSize(2));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class OptionsRepositoryTestIT {
     @Sql(scripts = {"/scripts/init.sql", "/scripts/options_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllAdminTest() {
-        assertThat("Page of Options is not of size = 7", optionsRepository.findAllAdmin(PageRequest.of(0, 50)).getContent(), hasSize(7));
+        assertThat("Page of Options is not of size = 7", optionsRepository.findAllAdmin(PageRequest.of(0, 50)).getContent(), hasSize(8));
     }
 
 }

@@ -13,7 +13,7 @@ import ua.edu.ratos.service.session.EvaluatorPostProcessor;
 import ua.edu.ratos.service.session.ProgressDataService;
 import ua.edu.ratos.service.session.SessionDataSerializerService;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

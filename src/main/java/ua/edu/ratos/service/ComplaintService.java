@@ -16,8 +16,8 @@ import ua.edu.ratos.security.SecurityUtils;
 import ua.edu.ratos.service.dto.out.ComplaintOutDto;
 import ua.edu.ratos.service.transformer.mapper.ComplaintMapper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;

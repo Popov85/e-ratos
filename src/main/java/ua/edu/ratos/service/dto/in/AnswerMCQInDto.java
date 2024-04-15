@@ -3,7 +3,7 @@ package ua.edu.ratos.service.dto.in;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Range;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.util.Objects;
 import java.util.Optional;
 

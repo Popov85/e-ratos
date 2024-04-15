@@ -10,8 +10,8 @@ import ua.edu.ratos.service.dto.in.SchemeInDto;
 import ua.edu.ratos.service.transformer.SchemeThemeTransformer;
 import ua.edu.ratos.service.transformer.SchemeTransformer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Component
 @AllArgsConstructor

@@ -10,7 +10,7 @@ import ua.edu.ratos.service.TwoPointGradingService;
 import ua.edu.ratos.service.dto.in.TwoPointGradingInDto;
 import ua.edu.ratos.service.dto.out.grading.TwoPointGradingOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Set;
 
 @Slf4j

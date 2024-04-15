@@ -2,7 +2,7 @@ package ua.edu.ratos.service.dto.in;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @ToString
 @Getter

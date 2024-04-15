@@ -52,7 +52,6 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - SPRING_ACTIVE_PROFILE=${SPRING_ACTIVE_PROFILE}
       - SPRING_CACHE_TYPE=${SPRING_CACHE_TYPE} # Specify cache type options: {none, simple, caffeine, redis}
-      - SPRING_SESSION_STORE_TYPE=${SPRING_SESSION_STORE_TYPE} # Should we use some specific store type for backing HttpSession? {none, redis}
       - SERVLET_SESSION_TIMEOUT=${SERVLET_SESSION_TIMEOUT} # Specify standard http session time-out (must be reasonably long, imagine scenario of 200 questions and 1 min per question)!
       - TOMCAT_MAX_THREADS=${TOMCAT_MAX_THREADS} # Specify the number of threads in Tomcat thread pool (default value is 200);
       - HIBERNATE_ENABLE_2LC=${HIBERNATE_ENABLE_2LC} # Should we enable Hibernate's 2-d level cache? (EH Cache is used  as impl.)

@@ -12,7 +12,7 @@ import ua.edu.ratos.service.dto.out.grading.FourPointGradingOutDto;
 import ua.edu.ratos.service.transformer.mapper.FourPointGradingMapper;
 import ua.edu.ratos.service.transformer.FourPointGradingTransformer;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

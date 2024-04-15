@@ -11,7 +11,7 @@ import ua.edu.ratos.service.QuestionService;
 import ua.edu.ratos.service.dto.in.QuestionFBSQInDto;
 import ua.edu.ratos.service.dto.out.question.QuestionFBSQOutDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController
