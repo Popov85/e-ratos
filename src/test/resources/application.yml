@@ -62,7 +62,7 @@ spring:
   flyway:
     enabled: true
     clean-disabled: false
-    locations: classpath:db/migration
+    locations: classpath:db/migration/database
 
 management:
   health:
@@ -71,9 +71,7 @@ management:
 
 ratos:
   init:
-    re_init: false
     populate: false
-    locale: EN
     cache: NONE
     cache_threads: 4
   session:

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @SpringBootTest(classes = RatosApplication.class)
 @Import(TestContainerConfig.class)
@@ -49,7 +50,9 @@ public class DynamicALLSessionTestIT extends BaseIT {
     //-------------------------------------------------------not batched------------------------------------------------
 
     @Test
-    @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_complex_scheme_dynamic_not_batched.sql", "/scripts/_functional/case_complex_all.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/init.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/_functional/case_complex_scheme_dynamic_not_batched.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/_functional/case_complex_all.sql", executionPhase = BEFORE_TEST_METHOD)
     public void complexDynamicCaseS1T5Q50PerBatch1Incorrect4Test() {
         /*
          * UserId = 2L;
@@ -131,7 +134,9 @@ public class DynamicALLSessionTestIT extends BaseIT {
     //-------------------------------------------------------batched [4]------------------------------------------------
 
     @Test
-    @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_complex_scheme_dynamic_batched_4.sql", "/scripts/_functional/case_complex_all.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/init.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/_functional/case_complex_scheme_dynamic_batched_4.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/_functional/case_complex_all.sql", executionPhase = BEFORE_TEST_METHOD)
     public void complexDynamicCaseS1T5Q50PerBatch4Skip1Incorrect4Test() {
         /*
          * UserId = 2L;
