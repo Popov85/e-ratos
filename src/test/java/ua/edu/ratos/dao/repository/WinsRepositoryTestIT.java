@@ -1,14 +1,15 @@
 package ua.edu.ratos.dao.repository;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.game.Wins;
 import ua.edu.ratos.dao.repository.game.WinsRepository;
 
@@ -16,20 +17,20 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
-public class WinsRepositoryTestIT {
+@Import(TestContainerConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class WinsRepositoryTestIT extends BaseIT {
 
     @Autowired
     private WinsRepository winsRepository;
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/wins_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllWinnersSinceTest() {
         // Given: 10 students, 3 winners of last week, many other winner for previous weeks,
         // It's now Wednesday and I want to know who won last week (Sunday 2019-02-24)?

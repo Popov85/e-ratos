@@ -1,13 +1,15 @@
 package ua.edu.ratos.service.session._it;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.game.Game;
 import ua.edu.ratos.dao.entity.game.Week;
 import ua.edu.ratos.dao.entity.game.Wins;
@@ -15,8 +17,6 @@ import ua.edu.ratos.service.domain.SchemeDomain;
 import ua.edu.ratos.service.domain.SessionData;
 import ua.edu.ratos.service.session.GameService;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,8 +26,8 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class GameServiceTestIT {
+@Import(TestContainerConfig.class)
+public class GameServiceTestIT extends BaseIT {
 
     @PersistenceContext
     private EntityManager em;
@@ -43,7 +43,6 @@ public class GameServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/game_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getPointsNotEnoughPercentsTest() {
         when(sessionData.getUserId()).thenReturn(2L);
         when(sessionData.isGameableSession()).thenReturn(true);
@@ -56,7 +55,6 @@ public class GameServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/game_test_data_one.sql", "/scripts/game_results_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getPointsNotFirstAttemptTest() {
         when(sessionData.getUserId()).thenReturn(2L);
         when(sessionData.isGameableSession()).thenReturn(true);
@@ -69,7 +67,6 @@ public class GameServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/game_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getPointsHighestPercentsTest() {
         when(sessionData.getUserId()).thenReturn(2L);
         when(sessionData.isGameableSession()).thenReturn(true);
@@ -84,7 +81,6 @@ public class GameServiceTestIT {
     //-------------------------------------------------------Save points------------------------------------------------
     @Test
     @Sql(scripts = {"/scripts/init.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void doGameProcessingCreateTest() {
         // Given: userId = 2L scored enough for being granted 5 points (99%) for 781 secs first time ever
         // no entries for this user in week/game tables before
@@ -112,7 +108,6 @@ public class GameServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/game_test_data_one.sql", "/scripts/week_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void doGameProcessingUpdateTest() {
         // Given: userId = 2L scored enough for being granted 3 points (92%) for 164 secs next time in the week
         // there were entries for this user in week (10 points, strike 1, time 2036)/game (100 points) tables before(!)
@@ -141,7 +136,6 @@ public class GameServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/game_test_data_one.sql", "/scripts/week_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void doGameProcessingStrikeTest() {
         // Given: userId = 3L scored enough for being granted points 3d time in the row this week (strike)
         // there were entries for this user in week(20 points, strike 2, bonuses 10, time 4150)/game (100 points, 20 bonuses)  tables before(!)
@@ -169,7 +163,6 @@ public class GameServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/game_test_data_one.sql", "/scripts/week_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void doGameProcessingLostStrikeTest() {
         // Given: userId = 3L scored NOT enough for being granted any points.
         // there were entries for this user in week(20 points, strike 2, bonuses 10, time 4150)/game (100 points, 20 bonuses)  tables before(!)
@@ -200,7 +193,6 @@ public class GameServiceTestIT {
     @Test
     @SuppressWarnings("unchecked")
     @Sql(scripts = {"/scripts/init.sql", "/scripts/week_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void calculateAndSaveWeeklyWinnersFirstWeekTest() {
         // Actual test begins
         gameService.calculateAndSaveWeeklyWinners();

@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @ToString
 @Component
 @RequestScope
-@Profile({"stage", "dev"})
+@Profile({"prod", "stage", "dev"})
 public class TimeoutImpl implements Timeout {
 
     private final AppProperties appProperties;

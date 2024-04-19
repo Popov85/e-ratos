@@ -1,20 +1,21 @@
 package ua.edu.ratos.dao.repository;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
-import ua.edu.ratos.dao.entity.Course;
-
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnitUtil;
 import jakarta.persistence.Tuple;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.jdbc.Sql;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
+import ua.edu.ratos.dao.entity.Course;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,8 +28,9 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
-public class CourseRepositoryTestIT {
+@Import(TestContainerConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class CourseRepositoryTestIT extends BaseIT {
 
     @Autowired
     private CourseRepository courseRepository;
@@ -47,7 +49,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForSecurityByIdTest() {
         Optional<Course> course = courseRepository.findForSecurityById(1L);
         // Fetched Access, Staff, Department
@@ -67,7 +68,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllMinForDropDownByStaffIdTest() {
         Set<Course> all = courseRepository.findAllForDropDownByStaffId(1L);
         assertThat("Set of Courses is not of right size", all, hasSize(8));
@@ -75,7 +75,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllMinForDropDownByDepartmentIdTest() {
         Set<Course> all = courseRepository.findAllForDropDownByDepartmentId(3L);
         assertThat("Set of Courses is not of right size", all, hasSize(8));
@@ -85,7 +84,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllForTableByDepartmentId() {
         Set<Course> result = courseRepository.findAllForTableByDepartmentId(3L);
         assertThat("Set of Courses is not as expected", result.size(), equalTo(8));
@@ -94,7 +92,6 @@ public class CourseRepositoryTestIT {
     //---------------------------------------------REPORT on content----------------------------------------------------
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countCoursesByDepOfDepId() {
         Tuple coursesByDep = courseRepository.countCoursesByDepOfDepId(1L);
         assertThat("Org. name is not as expected", coursesByDep.get("org"), equalTo("University"));
@@ -105,7 +102,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countCoursesByDepOfFacId() {
         Set<Tuple> coursesByDeps = courseRepository.countCoursesByDepOfFacId(1L);
         assertThat("Count tuple of courses by dep is not of right size", coursesByDeps, hasSize(3));
@@ -113,7 +109,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countCoursesByDepOfFacIdNegative() {
         Set<Tuple> coursesByDeps = courseRepository.countCoursesByDepOfFacId(2L);
         assertThat("Count tuple of courses by dep is not empty", coursesByDeps, empty());
@@ -121,7 +116,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countCoursesByDepOfOrgId() {
         Set<Tuple> coursesByDeps = courseRepository.countCoursesByDepOfOrgId(1L);
         assertThat("Count tuple of courses by dep is not of right size", coursesByDeps, hasSize(3));
@@ -129,7 +123,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countCoursesByDepOfOrgIdNegative() {
         Set<Tuple> coursesByDeps = courseRepository.countCoursesByDepOfOrgId(2L);
         assertThat("Count tuple of courses by dep is not empty", coursesByDeps, empty());
@@ -137,7 +130,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countCoursesByDepOfRatos() {
         Set<Tuple> coursesByDeps = courseRepository.countCoursesByDepOfRatos();
         assertThat("Count tuple of courses by dep is not of right size", coursesByDeps, hasSize(3));
@@ -147,7 +139,6 @@ public class CourseRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/course_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllTest() {
         Page<Course> page = courseRepository.findAll(PageRequest.of(0, 100));
         assertThat("Page of Courses is not as expected", page, allOf(

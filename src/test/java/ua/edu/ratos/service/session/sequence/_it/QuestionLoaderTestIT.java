@@ -1,12 +1,12 @@
 package ua.edu.ratos.service.session.sequence._it;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.Scheme;
 import ua.edu.ratos.dao.entity.question.Question;
 import ua.edu.ratos.dao.repository.SchemeRepository;
@@ -27,8 +27,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
  * Check what map contains.
  */
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class QuestionLoaderTestIT {
+@Import(TestContainerConfig.class)
+public class QuestionLoaderTestIT extends BaseIT {
 
     @Autowired
     private QuestionLoaderFactory questionLoaderFactory;
@@ -38,7 +38,6 @@ public class QuestionLoaderTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_all_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void loadAllQuestionsToMapWithSimpleImplTest() {
         Scheme scheme = schemeRepository.findForSessionById(1L)
                 .orElseThrow(() -> new AssertionError("Scheme not found"));
@@ -49,7 +48,6 @@ public class QuestionLoaderTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_all_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void loadAllQuestionsToMapWithCachedImplTest() {
         Scheme scheme = schemeRepository.findForSessionById(1L)
                 .orElseThrow(() -> new AssertionError("Scheme not found"));
@@ -61,7 +59,6 @@ public class QuestionLoaderTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_all_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void loadAllQuestionsToMapWithThreadLimitedImplTest() {
         Scheme scheme = schemeRepository.findForSessionById(1L)
                 .orElseThrow(() -> new AssertionError("Scheme not found"));

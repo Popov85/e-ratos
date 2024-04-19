@@ -98,7 +98,7 @@
 
     </springProfile>
 
-    <springProfile name="h2, mysql">
+    <springProfile name="test">
 
         <root level="ERROR">
             <appender-ref ref="CONSOLE"/>
@@ -143,7 +143,7 @@
             <appender-ref ref="CONSOLE"/>
         </logger>
 
-        <logger name="org.flywaydb" additivity="false" level="WARN">
+        <logger name="org.flywaydb" additivity="false" level="ERROR">
             <appender-ref ref="CONSOLE"/>
         </logger>
 

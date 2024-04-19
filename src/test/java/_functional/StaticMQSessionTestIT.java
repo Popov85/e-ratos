@@ -1,14 +1,15 @@
 package _functional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
 import ua.edu.ratos.RatosApplication;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos._helper.ResponseGeneratorMQHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
@@ -23,16 +24,13 @@ import ua.edu.ratos.service.dto.session.batch.BatchInDto;
 import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class StaticMQSessionTestIT {
+@Import(TestContainerConfig.class)
+public class StaticMQSessionTestIT extends BaseIT {
 
     @PersistenceContext
     private EntityManager em;
@@ -40,13 +38,12 @@ public class StaticMQSessionTestIT {
     @Autowired
     private GenericSessionService genericSessionService;
 
-    private ResponseGeneratorMQHelper responseGeneratorMQHelper = new ResponseGeneratorMQHelper();
+    private final ResponseGeneratorMQHelper responseGeneratorMQHelper = new ResponseGeneratorMQHelper();
 
     //---------------------------------------------------------not batched----------------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mq_scheme_non_dynamic_not_batched.sql", "/scripts/_functional/case_simple_mq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void nonDynamicCaseS1T1MQ10PerBatch1IncorrectAllTest() {
         /**
          * UserId = 2L;
@@ -97,7 +94,6 @@ public class StaticMQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mq_scheme_non_dynamic_batched_2.sql", "/scripts/_functional/case_simple_mq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void nonDynamicCaseS1T1MQ10PerBatch2Correct2Test() {
         /**
          * UserId = 2L;

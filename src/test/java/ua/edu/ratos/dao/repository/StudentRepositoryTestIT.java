@@ -1,20 +1,21 @@
 package ua.edu.ratos.dao.repository;
 
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.Student;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceUnitUtil;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -24,8 +25,9 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
-public class StudentRepositoryTestIT {
+@Import(TestContainerConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class StudentRepositoryTestIT extends BaseIT {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -42,7 +44,6 @@ public class StudentRepositoryTestIT {
 
     @Test
     @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findOneForAuthenticationTest() {
         Optional<Student> optional = studentRepository.findByIdForAuthentication("maria.medvedeva@example.com");
         assertTrue(persistenceUnitUtil.isLoaded(optional.get(), "user"), "User of Student is not loaded");
@@ -60,7 +61,6 @@ public class StudentRepositoryTestIT {
     //-------------------------------------------------------------------------------------------------------------------
     @Test
     @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findOneForEditTest() {
         Optional<Student> stud = studentRepository.findOneForEdit(2L);
         assertTrue(stud.isPresent(), "Student object is not found");
@@ -80,7 +80,6 @@ public class StudentRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdTest() {
         Page<Student> page = studentRepository.findAllByOrgId(1L, PageRequest.of(0, 50));
         assertThat("Page of Courses is not as expected", page, allOf(
@@ -98,7 +97,6 @@ public class StudentRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdAndSurnameLettersContainsTest() {
         Slice<Student> slice = studentRepository.findAllByOrgIdAndNameLettersContains(2L, "son", PageRequest.of(0, 50));
         assertThat("Slice of Courses is not as expected", slice, allOf(
@@ -120,7 +118,6 @@ public class StudentRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdAndEmailLettersContainsTest() {
         Slice<Student> slice = studentRepository.findAllByOrgIdAndNameLettersContains(2L, "com", PageRequest.of(0, 50));
         assertThat("Slice of Courses is not as expected", slice, allOf(
@@ -142,7 +139,6 @@ public class StudentRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/student_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByOrgIdAndNameLettersContainsNegativeTest() {
         Slice<Student> slice = studentRepository.findAllByOrgIdAndNameLettersContains(2L, "fr", PageRequest.of(0, 50));
         assertThat("Slice of Courses is not as expected", slice, allOf(

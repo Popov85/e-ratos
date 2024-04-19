@@ -18,7 +18,9 @@ as well as directly from within Intranet or Internet network via a browser.
 - Spring Boot 3.x;
 - Hibernate;
 - RDBMS (MySql 8.x);
-- Maven.
+- Maven;
+- Junit 5 (Jupiter);
+- TestContainers.
 
 ##### Frontend:
 - React.js (sources [here](https://github.com/Popov85/ratos3-frontend))
@@ -92,6 +94,8 @@ Docker file creation with Jib Maven plugin info:
 
 **IT tests**
 
+By config, all test classes ending with *TestIT will be executed!
+
 `./mvnw clean verify`
 
 **Local Terminal run**
@@ -103,13 +107,6 @@ Docker file creation with Jib Maven plugin info:
  - Run the app via Maven
 
 `./mvnw spring-boot:run`
-
-**Important!**
-
-By default, h2 profile is used to launch IT tests.
-To execute IT tests with MySql RDBMS, change the profile to mysql in core application.yml in test section.
-
-Additionally, change the value of ua.edu.ratos.ActiveProfile NOW=mysql
 
 
 #### Run DB operations

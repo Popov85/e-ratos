@@ -1,20 +1,21 @@
 package ua.edu.ratos.dao.repository;
 
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
-import ua.edu.ratos.dao.entity.Scheme;
-
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnitUtil;
 import jakarta.persistence.Tuple;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.jdbc.Sql;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
+import ua.edu.ratos.dao.entity.Scheme;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,8 +26,9 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
-public class SchemeRepositoryTestIT {
+@Import(TestContainerConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class SchemeRepositoryTestIT extends BaseIT {
 
     @Autowired
     private SchemeRepository schemeRepository;
@@ -43,7 +45,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one_groups_themes.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForEditByIdTest() {
         Optional<Scheme> optional = schemeRepository.findForEditById(1L);
         assertTrue(optional.isPresent(), "Scheme is not found");
@@ -59,7 +60,6 @@ public class SchemeRepositoryTestIT {
     //------------------------------------------------------SECURITY----------------------------------------------------
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForSecurityByIdTest() {
         Optional<Scheme> optional = schemeRepository.findForSecurityById(1L);
         assertTrue(optional.isPresent(), "Scheme is not found");
@@ -71,7 +71,6 @@ public class SchemeRepositoryTestIT {
     //-------------------------------------------------------SESSION----------------------------------------------------
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one_session.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForSessionByIdTest() {
         Optional<Scheme> optional = schemeRepository.findForSessionById(1L);
         assertTrue(optional.isPresent(), "Scheme is not found");
@@ -85,7 +84,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one_session.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForInfoByIdTest() {
         Optional<Scheme> optional = schemeRepository.findForInfoById(1L);
         assertTrue(optional.isPresent(), "Scheme is not found");
@@ -98,7 +96,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one_session.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForThemesManipulationByIdTest() {
         Optional<Scheme> optional = schemeRepository.findForThemesManipulationById(1L);
         assertTrue(optional.isPresent(), "Scheme is not found");
@@ -108,19 +105,16 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one_session.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findForGradingByIdTest() {
         Optional<Scheme> optional = schemeRepository.findForGradingById(1L);
         assertTrue(optional.isPresent(), "Scheme is not found");
         assertTrue(persistenceUnitUtil.isLoaded(optional.get(), "grading"), "Grading of Scheme is not loaded");
     }
 
-
     //-------------------------------------------------------CACHE------------------------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_with_themes_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findLargeForCachedSessionTest() {
         assertThat("Slice of Scheme is not of size = 2",
                 schemeRepository.findLargeForCachedSession(PageRequest.of(0, 10)).getContent(), hasSize(2));
@@ -128,7 +122,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_with_themes_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findCoursesSchemesForCachedSessionTest() {
         assertThat("Slice of Scheme is not of size = 2",
                 schemeRepository.findCoursesSchemesForCachedSession(2L, PageRequest.of(0, 10)).getContent(), hasSize(2));
@@ -136,27 +129,22 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_with_themes_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findDepartmentSchemesForCachedSessionTest() {
         assertThat("Slice of Scheme is not of size = 2",
                 schemeRepository.findDepartmentSchemesForCachedSession(2L, PageRequest.of(0, 10)).getContent(), hasSize(2));
     }
 
-
     //--------------------------------------------------INSTRUCTOR table----------------------------------------------
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByDepartmentIdTest() {
         assertThat("Set of Scheme is not of size = 10 for depId = 1",
                 schemeRepository.findAllByDepartmentId(1L), hasSize(10));
     }
 
-
     //---------------------------------------------REPORT on content----------------------------------------------------
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countSchemesByDepOfDepId() {
         Tuple schemesByDep = schemeRepository.countSchemesByDepOfDepId(1L);
         MatcherAssert.assertThat("Org. name is not as expected", schemesByDep.get("org"), equalTo("University"));
@@ -167,7 +155,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countSchemesByDepOfFacId() {
         Set<Tuple> schemesByDep = schemeRepository.countSchemesByDepOfFacId(1L);
         MatcherAssert.assertThat("Count tuple of schemes by dep is not of right size", schemesByDep, hasSize(3));
@@ -175,7 +162,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countSchemesByDepOfFacIdNegative() {
         Set<Tuple> schemesByDep = schemeRepository.countSchemesByDepOfFacId(2L);
         MatcherAssert.assertThat("Count tuple of schemes by dep is not empty", schemesByDep, empty());
@@ -183,7 +169,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countSchemesByDepOfOrgId() {
         Set<Tuple> schemesByDep = schemeRepository.countSchemesByDepOfOrgId(1L);
         MatcherAssert.assertThat("Count tuple of schemes by dep is not of right size", schemesByDep, hasSize(3));
@@ -191,7 +176,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countSchemesByDepOfOrgIdNegative() {
         Set<Tuple> schemesByDep = schemeRepository.countSchemesByDepOfOrgId(2L);
         MatcherAssert.assertThat("Count tuple of schemes by dep is not empty", schemesByDep, empty());
@@ -199,7 +183,6 @@ public class SchemeRepositoryTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void countSchemesByDepOfRatos() {
         Set<Tuple> schemesByDep = schemeRepository.countSchemesByDepOfRatos();
         MatcherAssert.assertThat("Count tuple of schemes by dep is not of right size", schemesByDep, hasSize(3));

@@ -1,14 +1,15 @@
 package _functional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
 import ua.edu.ratos.RatosApplication;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos._helper.ResponseGeneratorMCQHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
@@ -24,17 +25,14 @@ import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.session.EducationalSessionService;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class DynamicMCQSessionTestIT {
+@Import(TestContainerConfig.class)
+public class DynamicMCQSessionTestIT extends BaseIT {
 
     @PersistenceContext
     private EntityManager em;
@@ -45,13 +43,12 @@ public class DynamicMCQSessionTestIT {
     @Autowired
     private EducationalSessionService educationalSessionService;
 
-    private ResponseGeneratorMCQHelper responseGeneratorMCQHelper = new ResponseGeneratorMCQHelper();
+    private final ResponseGeneratorMCQHelper responseGeneratorMCQHelper = new ResponseGeneratorMCQHelper();
 
     //--------------------------------------------------Not batched-----------------------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_not_batched.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch1CorrectAllTest() {
         /**
          * UserId = 2L;
@@ -95,7 +92,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_not_batched.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch1Skip1CorrectAllTest() {
         /**
          * UserId = 2L;
@@ -150,7 +146,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_not_batched.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch1Incorrect1Test() {
         /**
          * UserId = 2L;
@@ -208,7 +203,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_all.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatchAllCorrectAllTest() {
         /**
          * UserId = 2L;
@@ -252,7 +246,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_all.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatchAllSkip3CorrectAllTest() {
         /**
          * UserId = 2L;
@@ -316,7 +309,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_all.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatchAllIncorrect3Test() {
         /**
          * UserId = 2L;
@@ -374,7 +366,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_2.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch2CorrectAllTest() {
         /**
          * UserId = 2L;
@@ -421,7 +412,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_2.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch2Skip1CorrectAllTest() {
         /**
          * UserId = 2L;
@@ -480,7 +470,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_2.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch2SkipAllCorrectAllTest() {
         /**
          * UserId = 2L;
@@ -538,7 +527,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_2.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch2Skip1Incorrect1Test() {
         /**
          * UserId = 2L;
@@ -601,7 +589,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_3.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch3CorrectAllTest() {
         /**
          * UserId = 2L;
@@ -648,7 +635,6 @@ public class DynamicMCQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_mcq_scheme_dynamic_batched_3.sql", "/scripts/_functional/case_simple_mcq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1MCQ10PerBatch2Skip1Incorrect2Test() {
         /**
          * UserId = 2L;

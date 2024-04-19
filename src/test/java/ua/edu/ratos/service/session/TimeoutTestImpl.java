@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ua.edu.ratos.service.domain.SessionData;
 
 @Component
-@Profile({"h2", "mysql"})
+@Profile({"test"})
 public class TimeoutTestImpl implements ua.edu.ratos.service.session.Timeout {
 
     @Override

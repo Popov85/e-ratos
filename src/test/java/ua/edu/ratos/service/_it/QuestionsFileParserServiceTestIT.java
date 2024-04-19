@@ -1,19 +1,19 @@
 package ua.edu.ratos.service._it;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.question.Question;
 import ua.edu.ratos.service.QuestionsFileParserService;
 import ua.edu.ratos.service.dto.out.QuestionsParsingResultOutDto;
 
-import jakarta.persistence.EntityManager;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
@@ -29,8 +29,8 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
  * @link https://stackoverflow.com/questions/21800726/using-spring-mvc-test-to-unit-test-multipart-post-request
  */
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class QuestionsFileParserServiceTestIT {
+@Import(TestContainerConfig.class)
+public class QuestionsFileParserServiceTestIT extends BaseIT {
 
     private static final String TYPICAL_CASE_TXT = "classpath:files/txt/typical_case.txt";
     private static final String TYPICAL_CASE_RTP = "classpath:files/rtp/typical_case.rtp";
@@ -47,7 +47,6 @@ public class QuestionsFileParserServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveTXTFileNoIssuesTest() throws Exception {
         File file = ResourceUtils.getFile(TYPICAL_CASE_TXT);
         final byte[] bytes = Files.readAllBytes(file.toPath());
@@ -69,7 +68,6 @@ public class QuestionsFileParserServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveRTPFileNoIssuesTest() throws Exception {
         File file = ResourceUtils.getFile(TYPICAL_CASE_RTP);
         final byte[] bytes = Files.readAllBytes(file.toPath());
@@ -91,7 +89,6 @@ public class QuestionsFileParserServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveTXT1251EncodedFileNoIssuesTest() throws Exception {
         File file = ResourceUtils.getFile(WIN1251_CASE);
         final byte[] bytes = Files.readAllBytes(file.toPath());
@@ -114,7 +111,6 @@ public class QuestionsFileParserServiceTestIT {
     @Test
     @SuppressWarnings(value = "unchecked")
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveTXTFileWithIssuesNotConfirmedTest() throws Exception {
         File file = ResourceUtils.getFile(WITH_ISSUES_CASE);
         final byte[] bytes = Files.readAllBytes(file.toPath());
@@ -137,7 +133,6 @@ public class QuestionsFileParserServiceTestIT {
     @Test
     @SuppressWarnings(value = "unchecked")
     @Sql(scripts = {"/scripts/init.sql", "/scripts/questions_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void parseAndSaveRTPFileWithIssuesConfirmedTest() throws Exception {
         File file = ResourceUtils.getFile(WITH_ISSUES_CASE);
         final byte[] bytes = Files.readAllBytes(file.toPath());

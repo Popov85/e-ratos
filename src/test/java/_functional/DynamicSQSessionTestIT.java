@@ -1,14 +1,15 @@
 package _functional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
 import ua.edu.ratos.RatosApplication;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos._helper.ResponseGeneratorSQHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
@@ -23,17 +24,14 @@ import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.session.EducationalSessionService;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class DynamicSQSessionTestIT {
+@Import(TestContainerConfig.class)
+public class DynamicSQSessionTestIT extends BaseIT {
 
     @PersistenceContext
     private EntityManager em;
@@ -44,13 +42,12 @@ public class DynamicSQSessionTestIT {
     @Autowired
     private EducationalSessionService educationalSessionService;
 
-    private ResponseGeneratorSQHelper responseGeneratorSQHelper = new ResponseGeneratorSQHelper();
+    private final ResponseGeneratorSQHelper responseGeneratorSQHelper = new ResponseGeneratorSQHelper();
 
     //------------------------------------------------------not batched-------------------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_sq_scheme_dynamic_not_batched.sql", "/scripts/_functional/case_simple_sq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1SQ10PerBatch1Skip2Correct0Test() {
         /*
          * UserId = 2L;
@@ -108,7 +105,6 @@ public class DynamicSQSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_simple_sq_scheme_dynamic_batched_2.sql", "/scripts/_functional/case_simple_sq.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void dynamicCaseS1T1SQ10PerBatch2Skip1Incorrect0Test() {
         /*
          * UserId = 2L;

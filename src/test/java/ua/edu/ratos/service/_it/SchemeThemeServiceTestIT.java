@@ -1,20 +1,20 @@
 package ua.edu.ratos.service._it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.SchemeTheme;
 import ua.edu.ratos.service.SchemeThemeService;
 import ua.edu.ratos.service.dto.in.SchemeThemeInDto;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -25,8 +25,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class SchemeThemeServiceTestIT {
+@Import(TestContainerConfig.class)
+public class SchemeThemeServiceTestIT extends BaseIT {
 
     public static final String JSON_NEW = "classpath:json/scheme_theme_in_dto_new.json";
 
@@ -43,7 +43,6 @@ public class SchemeThemeServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_theme_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void saveTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_NEW);
         SchemeThemeInDto dto = objectMapper.readValue(json, SchemeThemeInDto.class);
@@ -59,7 +58,6 @@ public class SchemeThemeServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_theme_settings_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void removeSettingsTest() {
         // Given 4 settings objects associated with SchemeTheme, let's remove one (4th)
         schemeThemeService.removeSettings(1L, 4L);
@@ -74,7 +72,6 @@ public class SchemeThemeServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_theme_settings_test_data_many.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void removeSettingsLastExceptionTest() {
         assertThrows(RuntimeException.class, () -> {
             // Given 4 settings objects associated with SchemeTheme, let's remove all one by one

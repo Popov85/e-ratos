@@ -1,21 +1,21 @@
 package ua.edu.ratos.service._it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.Scheme;
 import ua.edu.ratos.dao.entity.grading.SchemeFourPoint;
 import ua.edu.ratos.service.SchemeService;
 import ua.edu.ratos.service.dto.in.SchemeInDto;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -26,8 +26,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class SchemeServiceTestIT {
+@Import(TestContainerConfig.class)
+public class SchemeServiceTestIT extends BaseIT {
 
     private static final String JSON_NEW = "classpath:json/scheme_in_dto_new.json";
     private static final String FIND_WITH_COLLECTIONS = "select s from Scheme s left join fetch s.groups left join fetch s.themes t left join fetch t.settings where s.schemeId=:schemeId";
@@ -45,7 +45,6 @@ public class SchemeServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void saveTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_NEW);
         SchemeInDto dto = objectMapper.readValue(json, SchemeInDto.class);
@@ -65,7 +64,6 @@ public class SchemeServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateNameTest() {
         // Update only name
         schemeService.updateName(1L, "Updated name");
@@ -78,7 +76,6 @@ public class SchemeServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/scheme_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateIsActiveTest() {
         // Deactivate
         schemeService.updateIsActive(1L, false);

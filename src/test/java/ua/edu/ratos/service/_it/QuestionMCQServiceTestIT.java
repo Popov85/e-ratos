@@ -2,13 +2,13 @@ package ua.edu.ratos.service._it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.service.QuestionService;
 import ua.edu.ratos.service.dto.in.QuestionMCQInDto;
 import ua.edu.ratos.service.dto.out.answer.AnswerMCQOutDto;
@@ -24,8 +24,8 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class QuestionMCQServiceTestIT {
+@Import(TestContainerConfig.class)
+public class QuestionMCQServiceTestIT extends BaseIT {
 
     public static final String JSON_NEW = "classpath:json/question_mcq_in_dto_new.json";
     public static final String JSON_UPD = "classpath:json/question_mcq_in_dto_upd.json";
@@ -38,7 +38,6 @@ public class QuestionMCQServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/question_mcq_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void saveQuestionMcqTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_NEW);
         QuestionMCQInDto dto = objectMapper.readValue(json, QuestionMCQInDto.class);
@@ -57,7 +56,6 @@ public class QuestionMCQServiceTestIT {
     @Test
     @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/question_mcq_test_data.sql", "/scripts/question_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateQuestionMcqTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_UPD);
         QuestionMCQInDto dto = objectMapper.readValue(json, QuestionMCQInDto.class);

@@ -1,14 +1,15 @@
 package _functional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
 import ua.edu.ratos.RatosApplication;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos._helper.ResponseGeneratorALLHelper;
 import ua.edu.ratos.dao.entity.Result;
 import ua.edu.ratos.dao.entity.ResultDetails;
@@ -22,18 +23,15 @@ import ua.edu.ratos.service.dto.session.batch.BatchOutDto;
 import ua.edu.ratos.service.dto.session.question.QuestionSessionOutDto;
 import ua.edu.ratos.service.session.GenericSessionService;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RatosApplication.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class StaticALLSessionTestIT {
+@Import(TestContainerConfig.class)
+public class StaticALLSessionTestIT extends BaseIT {
 
     @PersistenceContext
     private EntityManager em;
@@ -41,13 +39,12 @@ public class StaticALLSessionTestIT {
     @Autowired
     private GenericSessionService genericSessionService;
 
-    private ResponseGeneratorALLHelper responseGeneratorALLHelper = new ResponseGeneratorALLHelper();
+    private final ResponseGeneratorALLHelper responseGeneratorALLHelper = new ResponseGeneratorALLHelper();
 
     //-------------------------------------------------Non-Dynamic, not batched-----------------------------------------
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_complex_scheme_non_dynamic_not_batched.sql", "/scripts/_functional/case_complex_all.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void complexNonDynamicCaseS1T5Q50PerBatch1Incorrect1Test() {
         /**
          * UserId = 2L;
@@ -133,7 +130,6 @@ public class StaticALLSessionTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/_functional/case_complex_scheme_non_dynamic_batched_2.sql", "/scripts/_functional/case_complex_all.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void complexNonDynamicCaseS1T5Q50PerBatch2Correct13Test() {
         /*
          * UserId = 2L;

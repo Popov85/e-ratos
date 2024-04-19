@@ -1,21 +1,21 @@
 package ua.edu.ratos.service._it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
-import ua.edu.ratos.ActiveProfile;
+import ua.edu.ratos.BaseIT;
+import ua.edu.ratos.TestContainerConfig;
 import ua.edu.ratos.dao.entity.Phrase;
 import ua.edu.ratos.dao.entity.answer.AnswerFBMQ;
 import ua.edu.ratos.service.AnswerFBMQService;
 import ua.edu.ratos.service.dto.in.AnswerFBMQInDto;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -25,8 +25,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class AnswerFBMQServiceTestIT {
+@Import(TestContainerConfig.class)
+public class AnswerFBMQServiceTestIT extends BaseIT {
 
     public static final String JSON_NEW = "classpath:json/answer_fbmq_in_dto_new.json";
     public static final String JSON_UPD = "classpath:json/answer_fbmq_in_dto_upd.json";
@@ -49,7 +49,6 @@ public class AnswerFBMQServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/answer_fbmq_test_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void saveTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_NEW);
         AnswerFBMQInDto dto = objectMapper.readValue(json, AnswerFBMQInDto.class);
@@ -69,7 +68,6 @@ public class AnswerFBMQServiceTestIT {
 
     @Test
     @Sql(scripts = {"/scripts/init.sql", "/scripts/answer_fbmq_test_data.sql", "/scripts/answer_fbmq_test_data_one.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/test_data_clear_" + ActiveProfile.NOW + ".sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateTest() throws Exception {
         File json = ResourceUtils.getFile(JSON_UPD);
         AnswerFBMQInDto dto = objectMapper.readValue(json, AnswerFBMQInDto.class);
