@@ -12,7 +12,7 @@ services:
     restart: always
     command: --default-authentication-plugin=caching_sha2_password --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
     ports:
-      - "3308:3306"
+      - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
       - MYSQL_DATABASE=${DATABASE_NAME}
@@ -20,16 +20,15 @@ services:
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - ./database:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d
 
   ratos_redis_db:
     container_name: ratos_redis_db
-    image: redis:latest
+    image: redis:7.2.4
     ports:
-      - "6379:6379"
+      - "6379"
     volumes:
       - ./redis.conf:/redis.conf
-    command: [ "redis-server", "/redis.conf" ]
+    #command: [ "redis-server", "/redis.conf" ]
 
   ratos_app:
     container_name: ratos_app

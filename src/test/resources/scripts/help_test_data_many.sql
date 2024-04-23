@@ -1,9 +1,7 @@
 insert into department (name, fac_id)
 values ('Department #2', 1);
-insert into user (name, surname, password, email)
-values ('Dmitri', 'Smirnoff', '855fgUwd', 'dmirti.smirnoff@gmail.com');
-insert into user_role(user_id, role_id)
-VALUES (2, 6);
+insert into user (name, surname, password, email, roles)
+values ('Dmitri', 'Smirnoff', '855fgUwd', 'dmirti.smirnoff@gmail.com', JSON_ARRAY('ROLE_FAC_ADMIN'));
 insert into staff (staff_id, dep_id, pos_id)
 values (2, 2, 1);
 insert into course (name, created, created_by, belongs_to, access_id)

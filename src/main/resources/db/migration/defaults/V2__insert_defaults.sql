@@ -3,15 +3,6 @@ INSERT INTO faculty (name, org_id) VALUES ('Faculty', 1);
 INSERT INTO department (name, fac_id) VALUES ('Department', 1);
 INSERT INTO class (name, fac_id) VALUES ('Class', 1);
 
-INSERT INTO role (name) VALUES ('ROLE_OAUTH');
-INSERT INTO role (name) VALUES ('ROLE_STUDENT');
-INSERT INTO role (name) VALUES ('ROLE_INSTRUCTOR');
-INSERT INTO role (name) VALUES ('ROLE_LAB-ASSISTANT');
-INSERT INTO role (name) VALUES ('ROLE_DEP-ADMIN');
-INSERT INTO role (name) VALUES ('ROLE_FAC-ADMIN');
-INSERT INTO role (name) VALUES ('ROLE_ORG-ADMIN');
-INSERT INTO role (name) VALUES ('ROLE_GLOBAL-ADMIN');
-
 INSERT INTO position (name) VALUES ('System admin');
 INSERT INTO position (name) VALUES ('Dean');
 INSERT INTO position (name) VALUES ('Head');
@@ -21,22 +12,16 @@ INSERT INTO position (name) VALUES ('Researcher');
 INSERT INTO position (name) VALUES ('Postgraduate');
 INSERT INTO position (name) VALUES ('Lab. assistant');
 
-INSERT INTO user (name, surname, password, email, is_active) VALUES
-  ('Staff', 'Staff', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'staff.staff@example.com',
-   1);
-INSERT INTO user_role (user_id, role_id) VALUES (1, 8);
+INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
+  ('Staff', 'Staff', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'staff.staff@example.com', JSON_ARRAY('ROLE_GLOBAL_ADMIN'), 1);
 INSERT INTO staff (staff_id, dep_id, pos_id) VALUES (1, 1, 1);
 
-INSERT INTO user (name, surname, password, email, is_active) VALUES
-  ('Student', 'Student', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'student@example.com',
-   1);
-INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
+INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
+  ('Student', 'Student', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'student@example.com', JSON_ARRAY('ROLE_STUDENT'), 1);
 INSERT INTO student (stud_id, class_id, fac_id, org_id, entrance_year) VALUES (2, 1, 1, 1, 2018);
 
-INSERT INTO user (name, surname, password, email, is_active) VALUES
-  ('Student2', 'Student2', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.',
-   'student2@example.com', 1);
-INSERT INTO user_role (user_id, role_id) VALUES (3, 2);
+INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
+  ('Student2', 'Student2', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.','student2@example.com', JSON_ARRAY('ROLE_STUDENT'), 1);
 INSERT INTO student (stud_id, class_id, fac_id, org_id, entrance_year) VALUES (3, 1, 1, 1, 2018);
 
 INSERT INTO language (name, eng_abbreviation) VALUES ('English', 'en');

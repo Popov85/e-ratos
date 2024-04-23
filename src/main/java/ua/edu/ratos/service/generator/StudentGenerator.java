@@ -30,7 +30,7 @@ public class StudentGenerator {
     @TrackTime
     @Transactional
     public List<Student> generate(int quantity, List<Clazz> list) {
-        List<Role> roles =  Arrays.asList(em.getReference(Role.class, 2L));
+        List<String> roles =  List.of("ROLE_STUDENT");
         List<Student> results = new ArrayList<>();
         for (int i = 1; i <= quantity; i++) {
             Clazz cl;
@@ -46,7 +46,7 @@ public class StudentGenerator {
         return results;
     }
 
-    private Student createOne(int i, Clazz cl, List<Role> roles) {
+    private Student createOne(int i, Clazz cl, List<String> roles) {
         Student stud = new Student();
         User user = new User();
         user.setName("name"+i);

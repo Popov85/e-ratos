@@ -14,17 +14,14 @@ import java.util.Collection;
 @ToString(callSuper = true)
 public class AuthenticatedStaff extends AuthenticatedUser {
 
-    private Long posId;
-
-    private Long depId;
-    private Long facId;
-    private Long orgId;
-
-    private String pos;
-
-    private String dep;
-    private String fac;
-    private String org;
+    private final Long posId;
+    private final Long depId;
+    private final Long facId;
+    private final Long orgId;
+    private final String pos;
+    private final String dep;
+    private final String fac;
+    private final String org;
 
     private AuthenticatedStaff(Long staffId,
                                String name,

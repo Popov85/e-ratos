@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import ua.edu.ratos.security.lti.LTIToolConsumerCredentials;
 import ua.edu.ratos.security.lti.LTIUserConsumerCredentials;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -229,35 +227,12 @@ public class SecurityUtils {
      *
      * @return OAuth 1.0 SignatureSecret
      */
+    @Deprecated
     public SignatureSecret getOauthSignatureSecret() {
         Object credentials = getAuthentication().getCredentials();
         if (!(credentials instanceof SignatureSecret))
             throw new SecurityException("No SignatureSecret was found!");
         return (SignatureSecret) credentials;
-    }
-
-    /**
-     * Check if first role is "greater" than the second, that is has more privileges than another;
-     * Only to compare admin roles!
-     *
-     * @param role1 first role
-     * @param role2 second role
-     * @return true if so, false - otherwise
-     */
-    public boolean isRoleGreater(String role1, String role2) {
-        List<String> allowedRoles;
-        if ("ROLE_DEP-ADMIN".equals(role1)) {
-            allowedRoles = Arrays.asList("ROLE_INSTRUCTOR", "ROLE_LAB-ASSISTANT");
-        } else if ("ROLE_FAC-ADMIN".equals(role1)) {
-            allowedRoles = Arrays.asList("ROLE_DEP-ADMIN", "ROLE_INSTRUCTOR", "ROLE_LAB-ASSISTANT");
-        } else if ("ROLE_ORG-ADMIN".equals(role1)) {
-            allowedRoles = Arrays.asList("ROLE_FAC-ADMIN", "ROLE_DEP-ADMIN", "ROLE_INSTRUCTOR", "ROLE_LAB-ASSISTANT");
-        } else if ("ROLE_GLOBAL-ADMIN".equals(role1)) {
-            allowedRoles = Arrays.asList("ROLE_ORG-ADMIN", "ROLE_FAC-ADMIN", "ROLE_DEP-ADMIN", "ROLE_INSTRUCTOR", "ROLE_LAB-ASSISTANT");
-        } else {
-            throw new SecurityException("Unknown role");
-        }
-        return allowedRoles.contains(role2);
     }
 
     //--------------------------------------------------------Private---------------------------------------------------

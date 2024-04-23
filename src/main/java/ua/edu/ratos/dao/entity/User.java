@@ -1,26 +1,26 @@
 package ua.edu.ratos.dao.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import jakarta.persistence.*;
+import ua.edu.ratos.dao.converter.JsonToSetConverter;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = {"roles"})
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 
@@ -39,12 +39,8 @@ public class User implements Serializable {
     @Column(name="is_active")
     private boolean active;
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Convert(converter = JsonToSetConverter.class)
+    @Column(name = "roles")
+    private Set<String> roles = new HashSet<>();
 
-    public void replaceRole(Role role) {
-        this.roles.clear();
-        this.roles.add(role);
-    }
 }

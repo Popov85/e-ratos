@@ -12,7 +12,6 @@ import ua.edu.ratos.service.dto.out.UserOutDto;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {PasswordMapper.class})
 public interface UserMapper {
 
-    @Mapping(target = "role", expression = "java(entity.getRoles().iterator().next().getName())")
     UserOutDto toDto(User entity);
 
     @Mapping(target = "active", constant = "true")

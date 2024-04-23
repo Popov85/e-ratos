@@ -12,7 +12,7 @@ import java.util.Set;
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
     //------------------------------------------------AUTHENTICATION (security)-----------------------------------------
-    @Query(value = "SELECT s FROM Staff s join fetch s.user u left join fetch u.roles join fetch s.department d join fetch d.faculty f join fetch f.organisation o where u.email = ?1")
+    @Query(value = "SELECT s FROM Staff s join fetch s.user u join fetch s.department d join fetch d.faculty f join fetch f.organisation o where u.email = ?1")
     Optional<Staff> findByIdForAuthentication(String email);
 
     //-----------------------------------------------------ONE for edit-------------------------------------------------
@@ -20,16 +20,16 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
     Optional<Staff> findOneForEdit(Long staffId);
 
     //------------------------------------------------------ADMIN table-------------------------------------------------
-    @Query(value="select s from Staff s join fetch s.user u left join fetch u.roles join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation where d.depId = ?1")
+    @Query(value="select s from Staff s join fetch s.user u join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation where d.depId = ?1")
     Set<Staff> findAllByDepartmentId(Long depId);
 
-    @Query(value="select s from Staff s join fetch s.user u left join fetch u.roles join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation where f.facId = ?1")
+    @Query(value="select s from Staff s join fetch s.user u join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation where f.facId = ?1")
     Set<Staff> findAllByFacultyId(Long facId);
 
-    @Query(value="select s from Staff s join fetch s.user u left join fetch u.roles join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation o where o.orgId = ?1")
+    @Query(value="select s from Staff s join fetch s.user u join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation o where o.orgId = ?1")
     Set<Staff> findAllByOrganisationId(Long orgId);
 
-    @Query(value="select s from Staff s join fetch s.user u left join fetch u.roles join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation")
+    @Query(value="select s from Staff s join fetch s.user u join fetch s.position join fetch s.department d join fetch d.faculty f join fetch f.organisation")
     Set<Staff> findAllByRatos();
 
     //-------------------------------------------------SOLELY for future refs.------------------------------------------

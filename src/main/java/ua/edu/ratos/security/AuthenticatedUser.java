@@ -43,7 +43,7 @@ public class AuthenticatedUser extends User {
         Set<GrantedAuthority> authorities =  new HashSet<>();
         if (user.getRoles()==null || user.getRoles().isEmpty()) return authorities;
         user.getRoles().forEach(a -> {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(a.getName());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(a);
             authorities.add(grantedAuthority);
         });
         return authorities;

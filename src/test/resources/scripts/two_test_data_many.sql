@@ -1,6 +1,6 @@
 insert into department (name, fac_id) values('Department #2', 1);
-insert into user (name, surname, password, email) values('Dmitri','Smirnoff','855fgUwd','dmirti.smirnoff@gmail.com');
-insert into user_role(user_id, role_id) VALUES (4, 6);
+insert into user (name, surname, password, email, roles)
+values('Dmitri','Smirnoff','855fgUwd','dmirti.smirnoff@gmail.com', JSON_ARRAY('ROLE_FAC_ADMIN'));
 insert into staff (staff_id, dep_id, pos_id) values(4, 2, 1);
 
 insert into two_point(name, threshold, is_default, is_deleted, grading_id, created_by, belongs_to)

@@ -1,9 +1,12 @@
 package ua.edu.ratos.service.dto.out;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,5 +22,6 @@ public class UserOutDto {
 
     private boolean active;
 
-    private String role;
+    @JsonProperty("role")
+    private Set<String> roles;
 }

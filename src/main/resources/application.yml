@@ -62,11 +62,6 @@ spring:
     caffeine:
       spec: maximumSize=10000,expireAfterAccess=1d
   session:
-    #jdbc:
-      #cleanup-cron: "0 * * * * *"
-      #initialize-schema: always
-      #schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
-      #table-name: SPRING_SESSION
     redis:
       cleanup-cron: "59 59 23 * * *"
       repository-type: indexed

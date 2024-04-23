@@ -1,12 +1,12 @@
 insert into department (name, fac_id) values('Department #2', 1);
 insert into department (name, fac_id) values('Department #3', 1);
 
-insert into user (name, surname, password, email) values('Dmitri','Smirnoff','855fgUwd','dmitri.smirnoff@gmail.com');
-insert into user_role(user_id, role_id) VALUES (4, 6);
+insert into user (name, surname, password, email, roles)
+values('Dmitri','Smirnoff','855fgUwd','dmitri.smirnoff@gmail.com', JSON_ARRAY('ROLE_FAC_ADMIN'));
 insert into staff (staff_id, dep_id, pos_id) values(4, 2, 1);
 
-insert into user (name, surname, password, email) values('Semen','Fine','pOt67n21','semen.fine@gmail.com');
-insert into user_role(user_id, role_id) VALUES (5, 6);
+insert into user (name, surname, password, email, roles)
+values('Semen','Fine','pOt67n21','semen.fine@gmail.com', JSON_ARRAY('ROLE_FAC_ADMIN'));
 insert into staff (staff_id, dep_id, pos_id) values(5, 3, 1);
 
 insert into theme (name, course_id, created_by, access_id, belongs_to, created) values('IT theme #1', 1, 1, 1, 1, CURRENT_TIMESTAMP);
