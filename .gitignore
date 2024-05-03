@@ -16,9 +16,8 @@ target/
 *.iml
 *.ipr
 .env
-logs
-database
-sql
+/database/
+sql/
 
 ### NetBeans ###
 nbproject/private/

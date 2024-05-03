@@ -12,7 +12,7 @@ services:
     restart: always
     command: --default-authentication-plugin=caching_sha2_password --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
     ports:
-      - "3307:3306"
+      - "3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
       - MYSQL_DATABASE=${DATABASE_NAME}
@@ -24,11 +24,10 @@ services:
   ratos_redis_db:
     container_name: ratos_redis_db
     image: redis:7.2.4
+    restart: always
     ports:
       - "6379"
-    volumes:
-      - ./redis.conf:/redis.conf
-    #command: [ "redis-server", "/redis.conf" ]
+    command: ["redis-server", "--requirepass sP7vCxu5"]
 
   ratos_app:
     container_name: ratos_app
@@ -72,5 +71,3 @@ services:
       - RATOS_SECURITY_NON_LMS_REGISTRATION=${RATOS_SECURITY_NON_LMS_REGISTRATION} # Should we allow students to do self-registration outside LMS? (TRUE/FALSE)
       - RATOS_LTI_LAUNCH_URL_FIX=${RATOS_LTI_LAUNCH_URL_FIX} # Whether we should replace https (requested) to http (actual) protocols? (TRUE/FALSE)
       - RATOS_LTI_LAUNCH_URL=${RATOS_LTI_LAUNCH_URL} # Specify full URL to be used by LMS
-    volumes:
-      - ./logs:/logs

@@ -18,6 +18,7 @@ as well as directly from within Intranet or Internet network via a browser.
 - Spring Boot 3.x;
 - Hibernate;
 - RDBMS (MySql 8.x);
+- Redis 7.x
 - Maven;
 - Junit 5 (Jupiter);
 - TestContainers.
@@ -36,6 +37,11 @@ minimal requirement is the following:
 
 [Here](https://hub.docker.com/repository/docker/gelever85/ratos3)<br>
 
+Use tags:
+
+- latest (for latest image)
+- prod (for least stable image)
+
 **Warning!**
 
 You need to create a Docker hub account to access the image.
@@ -51,6 +57,13 @@ Docker file creation with Jib Maven plugin info:
 (Specify you credentials from DockerHub)
 
 #### Local run
+
+##### Profiles
+- prod
+- stage
+- dev
+
+**Notes(!):** prod profile is tied to AWS environment ([see](https://github.com/Popov85/e-ratos/wiki/Deployment-prod-(AWS)) ElastiCache Redis config).
 
 ##### IDE Intellij:
 
