@@ -17,6 +17,7 @@ import ua.edu.ratos.service.dto.out.SchemeThemeSettingsOutDto;
         })
 public interface SchemeThemeMapper {
 
+    @Mapping(target = "themeId", source = "entity.theme.themeId")
     @Mapping(target = "theme", source = "entity.theme.name")
     SchemeThemeOutDto toDto(SchemeTheme entity);
 

@@ -19,6 +19,7 @@ public class CharsetDetector {
 
     /**
      * Detects a file's encoding based on input bytes
+     * The file might contain only ASCII characters, making it difficult for the detector to distinguish between encodings.
      * @param inputStream input file
      * @return detected encoding
      * @throws IOException
@@ -32,8 +33,9 @@ public class CharsetDetector {
         }
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
-        if (encoding == null)
-            throw new RuntimeException("Failed to detect the encoding of uploaded file");
+        if (encoding == null) {
+            encoding = "ASCII";//Fall back to ASCII encoding
+        }
         log.debug("Detected encoding :: {} ", encoding);
         detector.reset();
         return encoding;

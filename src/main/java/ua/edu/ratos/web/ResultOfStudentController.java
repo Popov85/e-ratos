@@ -8,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ua.edu.ratos.dao.entity.ResultOfStudentDetails;
 import ua.edu.ratos.dao.repository.specs.SpecsFilter;
 import ua.edu.ratos.service.ResultOfStudentDetailsService;
 import ua.edu.ratos.service.ResultOfStudentsService;
@@ -39,6 +38,11 @@ public class ResultOfStudentController {
     }
 
     //-------------------------------------------------------Staff------------------------------------------------------
+    @GetMapping(value = "/department/student-result", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResultOfStudentForStaffOutDto findAllByDepartmentId(@RequestParam final Long resultId) {
+        return resultOfStudentsService.findById(resultId);
+    }
+
     @GetMapping(value = "/department/student-results", produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<ResultOfStudentForStaffOutDto> findAllByDepartmentId(@PageableDefault(sort = {"sessionEnded"}, direction = Sort.Direction.DESC, value = 20) Pageable pageable) {
         return resultOfStudentsService.findAllByDepartmentId(pageable);

@@ -1,6 +1,7 @@
 server:
   port: ${SERVER_PORT}
   servlet:
+    context-path: /api
     session:
       timeout: ${SERVLET_SESSION_TIMEOUT}
   tomcat:

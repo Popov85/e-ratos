@@ -41,19 +41,19 @@ public class ReportOnResultsService {
 
 
     @Transactional(readOnly = true)
-    @Secured({"ROLE_LAB-ASSISTANT", "ROLE_INSTRUCTOR", "ROLE_DEP-ADMIN", "ROLE_FAC-ADMIN", "ROLE_ORG-ADMIN", "ROLE_GLOBAL-ADMIN"})
+    @Secured({"ROLE_LAB_ASSISTANT", "ROLE_INSTRUCTOR", "ROLE_DEP_ADMIN", "ROLE_FAC_ADMIN", "ROLE_ORG_ADMIN", "ROLE_GLOBAL_ADMIN"})
     public ReportOnResults getReportOnResults(@NonNull final ReportOnResultsInDto dto) {
         // Based on user role invoke corresponding report
         String role = securityUtils.getAuthRole();
         switch (role) {
-            case "ROLE_DEP-ADMIN":
+            case "ROLE_DEP_ADMIN":
             case "ROLE_INSTRUCTOR":
-            case "ROLE_LAB-ASSISTANT": {
+            case "ROLE_LAB_ASSISTANT": {
                 List<ResultOfStudentForReportOutDto> data = findAllForReportByDepartmentAndSpec(dto.getSpecs());
                 log.debug("Created a report on results for dep. staff");
                 return getReportOnContent(data);
             }
-            case "ROLE_FAC-ADMIN": {
+            case "ROLE_FAC_ADMIN": {
                 List<ResultOfStudentForReportOutDto> data;
                 // dep may be present, if not own faculty
                 if (dto.getDepartment()==null) {
@@ -64,7 +64,7 @@ public class ReportOnResultsService {
                 log.debug("Created a report on results for fac. admin");
                 return getReportOnContent(data);
             }
-            case "ROLE_ORG-ADMIN": {
+            case "ROLE_ORG_ADMIN": {
                 // fac/dep may be included, if neither - own organisation!
                 List<ResultOfStudentForReportOutDto> data;
                 if (dto.getDepartment()==null && dto.getFaculty()==null) {
@@ -77,7 +77,7 @@ public class ReportOnResultsService {
                 log.debug("Created a report on results for org. admin");
                 return getReportOnContent(data);
             }
-            case "ROLE_GLOBAL-ADMIN": {
+            case "ROLE_GLOBAL_ADMIN": {
                 // org/fac/dep may be included, if neither - own ratos instance!
                 List<ResultOfStudentForReportOutDto> data;
                 if (dto.getOrganisation() == null && dto.getDepartment()==null && dto.getFaculty()==null) {

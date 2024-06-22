@@ -33,7 +33,7 @@ public class SchemeController {
     @PostMapping(value = "/instructor/schemes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SchemeOutDto> save(@Valid @RequestBody SchemeInDto dto) {
         SchemeOutDto schemeOutDto = schemeService.save(dto);
-        log.debug("Saved Scheme, schemeId = {}", schemeOutDto.getSchemeId());
+        log.debug("Saved Scheme, SchemeOutDto = {}", schemeOutDto);
         return ResponseEntity.ok(schemeOutDto);
     }
 

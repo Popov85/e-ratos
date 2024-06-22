@@ -41,21 +41,21 @@ public class ReportOnContentService {
     private final SecurityUtils securityUtils;
 
     @Transactional(readOnly = true)
-    @Secured({"ROLE_DEP-ADMIN", "ROLE_FAC-ADMIN", "ROLE_ORG-ADMIN", "ROLE_GLOBAL-ADMIN"})
+    @Secured({"ROLE_DEP_ADMIN", "ROLE_FAC_ADMIN", "ROLE_ORG_ADMIN", "ROLE_GLOBAL_ADMIN"})
     public ReportOnContent getReportOnContent(@NonNull final ReportOnContentInDto dto) {
         // Based on user role invoke corresponding report
         String role = securityUtils.getAuthRole();
         switch (role) {
-            case "ROLE_DEP-ADMIN": {
+            case "ROLE_DEP_ADMIN": {
                 return getReportOnContentByDep(dto);
             }
-            case "ROLE_FAC-ADMIN": {
+            case "ROLE_FAC_ADMIN": {
                 return getReportOnContentByFac(dto);
             }
-            case "ROLE_ORG-ADMIN": {
+            case "ROLE_ORG_ADMIN": {
                 return getReportOnContentByOrg(dto);
             }
-            case "ROLE_GLOBAL-ADMIN": {
+            case "ROLE_GLOBAL_ADMIN": {
                 return getReportOnContentByRatos(dto);
             }
             default:

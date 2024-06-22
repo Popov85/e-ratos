@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.2.6</version>
     </parent>
 
     <properties>
@@ -309,7 +309,7 @@
                         <image>openjdk:17-alpine</image>
                     </from>
                     <to>
-                        <image>registry.hub.docker.com/gelever85/ratos3:latest</image>
+                        <image>registry.hub.docker.com/gelever85/e-ratos-backend:latest</image>
                     </to>
                 </configuration>
             </plugin>

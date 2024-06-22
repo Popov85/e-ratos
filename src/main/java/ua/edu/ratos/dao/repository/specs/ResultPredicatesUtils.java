@@ -2,6 +2,7 @@ package ua.edu.ratos.dao.repository.specs;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import ua.edu.ratos.dao.entity.*;
 
@@ -16,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @UtilityClass
 public class ResultPredicatesUtils {
 
+    @Deprecated
     // This is how exactly react-datepicker component sends dates to server
     private static DateTimeFormatter SIMPLE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -214,12 +217,13 @@ public class ResultPredicatesUtils {
         // 1. Date
         // 2. Entity = Result
         Object object = value.getFilterVal();
+        log.debug("Filter val = {}", object);
         if (object != null ) {
             Map<String, String> map = (Map<String, String>) object;
             String string = map.get("date");
             if (string ==null || "".equals(string)) return Optional.empty();
 
-            LocalDate date = LocalDate.parse(string, SIMPLE_FORMATTER);
+            LocalDate date = LocalDate.parse(string, DateTimeFormatter.ISO_DATE_TIME);
             LocalDateTime from = date.atStartOfDay();
 
             final ZoneId zone = ZoneId.systemDefault();
@@ -240,7 +244,7 @@ public class ResultPredicatesUtils {
             Map<String, String> map = (Map<String, String>) object;
             String string = map.get("date");
             if (string ==null || "".equals(string)) return Optional.empty();
-            LocalDate date = LocalDate.parse(string, SIMPLE_FORMATTER);
+            LocalDate date = LocalDate.parse(string, DateTimeFormatter.ISO_DATE_TIME);
             LocalDateTime to = date.atStartOfDay();
 
             final ZoneId zone = ZoneId.systemDefault();

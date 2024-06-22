@@ -13,7 +13,7 @@ INSERT INTO position (name) VALUES ('Postgraduate');
 INSERT INTO position (name) VALUES ('Lab. assistant');
 
 INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
-  ('Staff', 'Staff', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'staff.staff@example.com', JSON_ARRAY('ROLE_GLOBAL_ADMIN'), 1);
+  ('Global', 'Admin', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'global.admin@example.com', JSON_ARRAY('ROLE_GLOBAL_ADMIN'), 1);
 INSERT INTO staff (staff_id, dep_id, pos_id) VALUES (1, 1, 1);
 
 INSERT INTO user (name, surname, password, email, roles, is_active) VALUES

@@ -49,6 +49,13 @@ public class ResultOfStudentsService {
 
 
     //-------------------------------------------------------STAFF------------------------------------------------------
+
+    @Transactional(readOnly = true)
+    public ResultOfStudentForStaffOutDto findById(@NonNull final Long resultId) {
+        return resultOfStudentRepository.findById(resultId).map(resultOfStudentForStaffMapper::toDto)
+                .orElseThrow(()->new RuntimeException("Failed to execute search!"));
+    }
+
     @Transactional(readOnly = true)
     public Page<ResultOfStudentForStaffOutDto> findAllByDepartmentId(@NonNull final Pageable pageable) {
         Specification<ResultOfStudent> specs = ofDepartment(securityUtils.getAuthDepId());
