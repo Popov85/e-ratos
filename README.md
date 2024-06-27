@@ -1,4 +1,4 @@
-### e-RATOS (backend+compiled front-end)
+### e-RATOS (backend)
 
 [See WiKi](https://github.com/Popov85/ratos3/wiki)
 
@@ -35,7 +35,7 @@ minimal requirement is the following:
 
 #### Most recent Docker build:
 
-[Here](https://hub.docker.com/repository/docker/gelever85/ratos3)<br>
+[Here](https://hub.docker.com/repository/docker/gelever85/e-ratos-backend)<br>
 
 Use tags:
 

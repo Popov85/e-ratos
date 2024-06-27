@@ -13,24 +13,14 @@ INSERT INTO position (name) VALUES ('Postgraduate');
 INSERT INTO position (name) VALUES ('Lab. assistant');
 
 INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
-  ('Global', 'Admin', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'global.admin@example.com', JSON_ARRAY('ROLE_GLOBAL_ADMIN'), 1);
+    ('Global', 'Admin', '{bcrypt}$2a$10$W15Rq6z2vplUn4ociodYA.LaJ/atSVsNRicZupLe4qVDJ.rXCgg9C', 'global.admin@example.com', JSON_ARRAY('ROLE_GLOBAL_ADMIN'), 1);
 INSERT INTO staff (staff_id, dep_id, pos_id) VALUES (1, 1, 1);
 
 INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
-  ('Student', 'Student', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.', 'student@example.com', JSON_ARRAY('ROLE_STUDENT'), 1);
-INSERT INTO student (stud_id, class_id, fac_id, org_id, entrance_year) VALUES (2, 1, 1, 1, 2018);
-
-INSERT INTO user (name, surname, password, email, roles, is_active) VALUES
-  ('Student2', 'Student2', '{bcrypt}$2a$10$e.MY/qnalhvaoqI5QczLSuahfGbmthqd0QJh2NJ/38nB7LOZCW7d.','student2@example.com', JSON_ARRAY('ROLE_STUDENT'), 1);
-INSERT INTO student (stud_id, class_id, fac_id, org_id, entrance_year) VALUES (3, 1, 1, 1, 2018);
+    ('Student', 'Student', '{bcrypt}$2a$10$c3lFu8vPdAtda.FFJgQXoOU.y9QKaHmlrML1dwx6CJt687aWybNEy', 'student@example.com', JSON_ARRAY('ROLE_STUDENT'), 1);
+INSERT INTO student (stud_id, class_id, fac_id, org_id, entrance_year) VALUES (2, 1, 1, 1, 2024);
 
 INSERT INTO language (name, eng_abbreviation) VALUES ('English', 'en');
-INSERT INTO language (name, eng_abbreviation) VALUES ('Deutsch', 'de');
-INSERT INTO language (name, eng_abbreviation) VALUES ('français', 'fr');
-INSERT INTO language (name, eng_abbreviation) VALUES ('español', 'es');
-INSERT INTO language (name, eng_abbreviation) VALUES ('polski', 'pl');
-INSERT INTO language (name, eng_abbreviation) VALUES ('українська', 'ua');
-INSERT INTO language (name, eng_abbreviation) VALUES ('русский', 'ru');
 
 INSERT INTO question_type (type_id, eng_abbreviation, description) VALUES (1, 'MCQ', 'Multiple choice question');
 INSERT INTO question_type (type_id, eng_abbreviation, description) VALUES (2, 'FBSQ', 'Fill blank single question');
@@ -76,12 +66,22 @@ VALUES ('lms', 0, 0.5, 1, 3, 1, 1, 1);
 
 INSERT INTO settings (name, seconds_per_question, strict_seconds_per_question, questions_per_sheet, days_keep_result_details, level_2_coefficient, level_3_coefficient, is_deleted, is_default, created_by, belongs_to)
 VALUES ('default', 60, 0, 1, 1, 1, 1, 0, 1, 1, 1);
+INSERT INTO settings (name, seconds_per_question, strict_seconds_per_question, questions_per_sheet, days_keep_result_details, level_2_coefficient, level_3_coefficient, is_deleted, is_default, created_by, belongs_to)
+VALUES ('batched', 60, 0, 1, 3, 1, 1, 0, 0, 1, 1);
+INSERT INTO settings (name, seconds_per_question, strict_seconds_per_question, questions_per_sheet, days_keep_result_details, level_2_coefficient, level_3_coefficient, is_deleted, is_default, created_by, belongs_to)
+VALUES ('non_limited', 0, 0, 0, 3, 1, 1, 0, 0, 1, 1);
+
 INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to)
 VALUES ('exam', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
 INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to)
-VALUES ('training', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+VALUES ('exam_mock', 1, 0, 0, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO mode (name, is_helpable, is_pyramid, is_skipable, is_rightans, is_preservable, is_pauseable, is_reportable, is_default, created_by, belongs_to)
+VALUES ('dynamic', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+
 INSERT INTO options (name, display_questions_left, display_batches_left, display_current_score, display_effective_score, display_progress, display_motivational_messages, display_result_score, display_result_mark, display_time_spent, display_result_themes, display_result_questions, is_deleted, is_default, created_by, belongs_to)
 VALUES ('exam', 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1);
+INSERT INTO options (name, display_questions_left, display_batches_left, display_current_score, display_effective_score, display_progress, display_motivational_messages, display_result_score, display_result_mark, display_time_spent, display_result_themes, display_result_questions, is_deleted, is_default, created_by, belongs_to)
+VALUES ('exam_mock', 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1);
 INSERT INTO options (name, display_questions_left, display_batches_left, display_current_score, display_effective_score, display_progress, display_motivational_messages, display_result_score, display_result_mark, display_time_spent, display_result_themes, display_result_questions, is_deleted, is_default, created_by, belongs_to)
 VALUES ('training', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1);
 

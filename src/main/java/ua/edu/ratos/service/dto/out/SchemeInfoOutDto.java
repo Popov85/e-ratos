@@ -37,4 +37,6 @@ public class SchemeInfoOutDto {
     private String course;
 
     private String staff;
+
+    private Boolean active;
 }
