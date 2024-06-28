@@ -25,17 +25,6 @@ abstract class AbstractQuestionsFileParser implements QuestionsFileParser {
 
     String header = "";
 
-/*    @Override
-    public QuestionsParsingResult parseFile(File file, String charset) {
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream(file), charset))) {
-            doParse(br);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse File", e);
-        }
-        return new QuestionsParsingResult(charset, header, questions, questionsParsingIssues);
-    }*/
-
     @Override
     public QuestionsParsingResult parseFile(File file, String charset) {
         Path path = file.toPath();
@@ -78,15 +67,21 @@ abstract class AbstractQuestionsFileParser implements QuestionsFileParser {
         int sentinel = 0;
         boolean isEmpty = true;
         for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).trim().startsWith("#")) {
+            String line = lines.get(i).trim();
+            // Remove BOM if it exists
+            if (line.startsWith("\uFEFF")) {
+                line = line.substring(1);
+            }
+            if (line.startsWith("#")) {
                 sentinel = i;
                 isEmpty = false;
                 break;
             }
-            stringBuilder.append(lines.get(i));
+            stringBuilder.append(line);
         }
         if (isEmpty) throw new RuntimeException("No questions found in the file!");
         this.header = stringBuilder.toString();
+        System.out.println("Header = "+this.header);
         return sentinel;
     }
 

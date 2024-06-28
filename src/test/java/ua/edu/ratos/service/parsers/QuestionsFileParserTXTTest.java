@@ -27,6 +27,8 @@ public class QuestionsFileParserTXTTest {
 
     private static final String HEADER_CASE = "classpath:files/txt/header_case.txt";
 
+    private static final String BOM_CASE = "classpath:files/txt/bom_case.txt";
+
 
     @Test
     public void parseFileOfTXTFormatShouldYieldCorrectResultOf10QuestionsTest() throws Exception {
@@ -81,6 +83,21 @@ public class QuestionsFileParserTXTTest {
                 hasProperty("questions", hasSize(equalTo(3))),
                 hasProperty("issues", hasSize(equalTo(5))),
                 hasProperty("invalid", equalTo(3))
+        ));
+    }
+
+    @Test
+    public void parseFileOfTXTFormatWithBOMIssuesTest() throws Exception {
+        QuestionsFileParser parser = new QuestionsFileParserTXT();
+        File file = ResourceUtils.getFile(BOM_CASE);
+        QuestionsParsingResult result = parser.parseFile(file, "UTF-8");
+        //System.out.println("Result = "+ result);
+        assertThat("Result of parsing object is not as expected", result, allOf(
+                hasProperty("charset", equalTo("UTF-8")),
+                hasProperty("header", is("")),
+                hasProperty("questions", hasSize(equalTo(1))),
+                hasProperty("issues", hasSize(equalTo(0))),
+                hasProperty("invalid", equalTo(0))
         ));
     }
 

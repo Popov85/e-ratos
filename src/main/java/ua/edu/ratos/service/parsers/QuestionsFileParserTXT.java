@@ -20,17 +20,21 @@ public final class QuestionsFileParserTXT extends AbstractQuestionsFileParser im
 
     @Override
     void parseLine(String line) {
-        if (startStatus == false) throw new IllegalStateException("Parsing control yet not started!");
-        if (!line.trim().isEmpty()) {
-            String trimmedLine = line.trim();
-            Character firstChar = trimmedLine.charAt(0);
+        if (!startStatus) throw new IllegalStateException("Parsing control yet not started!");
+        line = line.trim();
+        // Remove BOM if it exists
+        if (line.startsWith("\uFEFF")) {
+            line = line.substring(1);
+        }
+        if (!line.isEmpty()) {
+            Character firstChar = line.charAt(0);
             if (firstChar == '#') {
                 readQuestion();
-            } else if (trimmedLine.length()==1 && (firstChar == '0' || firstChar == '1')) {
+            } else if (line.length()==1 && (firstChar == '0' || firstChar == '1')) {
                 short correct = (firstChar == '1') ? (short) 100 : 0;
                 readAnswer(correct);
             } else {// Goes String line (question title most probably), or the continuation of answerIds title
-                readString(trimmedLine);
+                readString(line);
             }
         }
     }
