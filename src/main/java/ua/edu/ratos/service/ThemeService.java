@@ -121,6 +121,11 @@ public class ThemeService {
 
     //---------------------------------------------------Staff (table)--------------------------------------------------
     @Transactional(readOnly = true)
+    public ThemeOutDto findThemeById(@NonNull final Long themeId) {
+        return themeMapper.toDto(themeRepository.findById(themeId).orElseThrow(()->new RuntimeException("Theme is not found!")));
+    }
+
+    @Transactional(readOnly = true)
     public Set<ThemeOutDto> findAllForTableByDepartment() {
         return themeRepository.findAllForTableByDepartmentId(securityUtils.getAuthDepId())
                 .stream()

@@ -76,6 +76,10 @@ public class ThemeController {
     }
 
     //----------------------------------------------Staff table---------------------------------------------------------
+    @GetMapping(value="/department/themes-table/theme", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ThemeOutDto findThemeById(@RequestParam Long id) {
+        return themeService.findThemeById(id);
+    }
 
     @GetMapping(value="/department/themes-table/all-themes-by-department", produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<ThemeOutDto> findAllForTableByDepartment() {
