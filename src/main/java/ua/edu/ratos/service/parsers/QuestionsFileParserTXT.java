@@ -22,10 +22,6 @@ public final class QuestionsFileParserTXT extends AbstractQuestionsFileParser im
     void parseLine(String line) {
         if (!startStatus) throw new IllegalStateException("Parsing control yet not started!");
         line = line.trim();
-        // Remove BOM if it exists
-        if (line.startsWith("\uFEFF")) {
-            line = line.substring(1);
-        }
         if (!line.isEmpty()) {
             Character firstChar = line.charAt(0);
             if (firstChar == '#') {

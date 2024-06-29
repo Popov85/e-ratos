@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,6 +55,7 @@ public class QuestionsFileParserService {
      * @param themeId theme all the questions belong to
      * @param confirmed is the operation confirmed by the user?
      * @return result on parsing and saving
+     * @link <a href="https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html">BOM</>
      */
     @Transactional
     public QuestionsParsingResultOutDto parseAndSave(@NonNull final MultipartFile multipartFile,
@@ -61,8 +63,9 @@ public class QuestionsFileParserService {
                                                      boolean confirmed) {
         String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
         QuestionsFileParser parser = parserFactory.getParser(extension);
+        // Detect and remove BOM symbol from is2
         try (InputStream is = multipartFile.getInputStream();
-             InputStream is2 = multipartFile.getInputStream()) {
+             InputStream is2 = BOMInputStream.builder().setInputStream(multipartFile.getInputStream()).get()) {
             final String encoding = charsetDetector.detectEncoding(is);
             final QuestionsParsingResult parsingResult = parser.parseStream(is2, encoding);
             int quantity = parsingResult.getQuestions().size();

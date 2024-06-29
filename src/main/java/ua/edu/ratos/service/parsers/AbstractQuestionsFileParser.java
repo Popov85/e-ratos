@@ -68,10 +68,6 @@ abstract class AbstractQuestionsFileParser implements QuestionsFileParser {
         boolean isEmpty = true;
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
-            // Remove BOM if it exists
-            if (line.startsWith("\uFEFF")) {
-                line = line.substring(1);
-            }
             if (line.startsWith("#")) {
                 sentinel = i;
                 isEmpty = false;
@@ -81,7 +77,6 @@ abstract class AbstractQuestionsFileParser implements QuestionsFileParser {
         }
         if (isEmpty) throw new RuntimeException("No questions found in the file!");
         this.header = stringBuilder.toString();
-        System.out.println("Header = "+this.header);
         return sentinel;
     }
 
