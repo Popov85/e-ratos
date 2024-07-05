@@ -85,11 +85,18 @@ Docker file creation with Jib Maven plugin info:
 
 ##### IDE agnostic:
 
+BE only
+
 - Install Docker [runtime](https://docs.docker.com/engine/)
 - Install [Docker-compose](https://github.com/docker/compose/releases)
 - Put .env file with all required environment variables into the same folder where docker-compose.yaml is located.
-- Run `docker-compose up -d` to start the app;
-- Run `docker-compose down` to stop the app;
+- Run `docker compose up -d` to start the app;
+- Run `docker compose down` to stop the app;
+
+Fullstack
+
+- Run `docker-compose -f docker-compose-fullstack.yaml up -d` to start the fullstack app with front-end part;
+
 
 #### Run tests
 

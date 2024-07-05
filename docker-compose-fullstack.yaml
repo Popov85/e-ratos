@@ -5,8 +5,19 @@
 
 services:
 
-  ratos_mysql_db:
-    container_name: ratos_mysql_db
+  ratos_frontend:
+    container_name: ratos_frontend
+    image: gelever85/e-ratos-frontend:local
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - ratos_backend
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+  ratos_main_db:
+    container_name: ratos_main_db
     image: mysql:8.0.36
     restart: always
     command: --default-authentication-plugin=caching_sha2_password --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
@@ -20,31 +31,31 @@ services:
     volumes:
       - ./database:/var/lib/mysql
 
-  ratos_redis_db:
-    container_name: ratos_redis_db
+  ratos_cache_db:
+    container_name: ratos_cache_db
     image: redis:7.2.4
     restart: always
     ports:
       - "6379"
     command: ["redis-server", "--requirepass sP7vCxu5"]
 
-  ratos_app:
-    container_name: ratos_app
+  ratos_backend:
+    container_name: ratos_backend
     depends_on:
-      - ratos_mysql_db
-      - ratos_redis_db
+      - ratos_main_db
+      - ratos_cache_db
     image: gelever85/e-ratos-backend:latest
     restart: always
     ports:
-      - "80:8080"
+      - "8080"
     environment:
-      - DATABASE_HOST=ratos_mysql_db
+      - DATABASE_HOST=ratos_main_db
       - SERVER_PORT=${SERVER_PORT} # Environment reference for server port
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_PORT=${DATABASE_PORT}
-      - REDIS_HOST=ratos_redis_db
+      - REDIS_HOST=ratos_cache_db
       - REDIS_SECRET=${REDIS_SECRET}
       - REDIS_PORT=${REDIS_PORT}
       - SPRING_ACTIVE_PROFILE=${SPRING_ACTIVE_PROFILE}
