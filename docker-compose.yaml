@@ -52,6 +52,7 @@ services:
       - SERVLET_SESSION_TIMEOUT=${SERVLET_SESSION_TIMEOUT} # Specify standard http session time-out (must be reasonably long, imagine scenario of 200 questions and 1 min per question)!
       - TOMCAT_MAX_THREADS=${TOMCAT_MAX_THREADS} # Specify the number of threads in Tomcat thread pool (default value is 200);
       - HIBERNATE_ENABLE_2LC=${HIBERNATE_ENABLE_2LC} # Should we enable Hibernate's 2-d level cache? (EH Cache is used  as impl.)
+      - RATOS_GAMIFICATION_ON=${RATOS_GAMIFICATION_ON} # If gamification mode is on
       - RATOS_INIT_CACHE=${RATOS_INIT_CACHE} # Populate cache on start-up {NONE, LARGE, LATEST, ALL}
       - RATOS_INIT_CACHE_THREADS=${RATOS_INIT_CACHE_THREADS} # If previous option, in how many threads we should populate cache on start-up; {CPU cores}
       - RATOS_SESSION_INCLUDE_GROUPS=${RATOS_SESSION_INCLUDE_GROUPS} # Whether we should take into account student groups when deciding if to allow access to a given schema? (TRUE/FALSE)
