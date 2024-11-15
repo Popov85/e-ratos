@@ -1,3 +1,11 @@
+info: # Core info for actuator endpoints
+  app:
+    name: e-Ratos
+    description: e-Ratos( Embeddable Remote Automatised Teaching and Learning System)
+    version: 3.0
+  author:
+    contacts: https://www.linkedin.com/in/Popov85/
+
 server:
   port: ${SERVER_PORT}
   servlet:
@@ -84,6 +92,29 @@ management:
   health:
     redis:
       enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,loggers
+  endpoint:
+    health:
+      enabled: true
+      show-details: when_authorized
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    env:
+      enabled: true
+      show-values: when_authorized
+    loggers:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  observations:
+    annotations:
+      enabled: true
 
 ratos:
   init:

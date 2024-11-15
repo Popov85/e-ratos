@@ -1,5 +1,6 @@
 package ua.edu.ratos.service.session;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class IndividualSequenceProducer {
      * @param scheme Scheme entity
      * @return individual sequence of questions
      */
+    @Timed(value = "get_individual_sequence.timed", description = "Time taken to obtain individual sequence of questions")
     public List<QuestionDomain> getIndividualSequence(@NonNull final Scheme scheme) {
         QuestionLoader questionLoader = questionLoaderSelector.select(scheme);
         Strategy strategy = scheme.getStrategy();

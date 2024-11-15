@@ -37,8 +37,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/login*").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/sign-up*", "/access-denied*").permitAll()
-                        .requestMatchers("/actuator/**", "/self-registration/**").permitAll()
+                        .requestMatchers("/sign-up*", "/access-denied*", "/self-registration/**").permitAll()
+                        .requestMatchers("/actuator/metrics/**", "/actuator/env/**", "/actuator/loggers/**").hasRole("GLOBAL_ADMIN")
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/*.js", "/*.css", "/*.png").permitAll()
                         .requestMatchers("/user/**", "/student/**", "/session/**", "/info/**").hasAnyRole("LMS_USER", "STUDENT", "LAB_ASSISTANT", "INSTRUCTOR", "DEP_ADMIN", "FAC_ADMIN", "ORG_ADMIN", "GLOBAL_ADMIN")
                         .requestMatchers("/department/**").hasAnyRole("LAB_ASSISTANT", "INSTRUCTOR", "DEP_ADMIN", "FAC_ADMIN", "ORG_ADMIN", "GLOBAL_ADMIN")
